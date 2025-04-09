@@ -42,28 +42,31 @@
             this.label3 = new System.Windows.Forms.Label();
             this.fileNameLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.saveFileButton = new System.Windows.Forms.Button();
-            this.cancelFileButton = new System.Windows.Forms.Button();
-            this.saveFileName = new System.Windows.Forms.TextBox();
-            this.saveFileNameLabel = new System.Windows.Forms.Label();
-            this.saveFileTypeLabel = new System.Windows.Forms.Label();
-            this.saveFilePanel = new System.Windows.Forms.Panel();
             this.newFileButton = new System.Windows.Forms.Button();
             this.cutButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.copyButton = new System.Windows.Forms.Button();
             this.renameButton = new System.Windows.Forms.Button();
             this.pasteButton = new System.Windows.Forms.Button();
+            this.openRecentFileButton = new System.Windows.Forms.Button();
+            this.searchBar = new System.Windows.Forms.TextBox();
+            this.searchButton = new System.Windows.Forms.Button();
+            this.saveFileButton = new System.Windows.Forms.Button();
+            this.cancelFileButton = new System.Windows.Forms.Button();
+            this.saveFileName = new System.Windows.Forms.TextBox();
+            this.saveFileNameLabel = new System.Windows.Forms.Label();
+            this.saveFileTypeLabel = new System.Windows.Forms.Label();
+            this.saveFilePanel = new System.Windows.Forms.Panel();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.saveFilePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // backButton
             // 
-            this.backButton.Location = new System.Drawing.Point(9, 8);
-            this.backButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.backButton.Location = new System.Drawing.Point(6, 42);
             this.backButton.Name = "backButton";
-            this.backButton.Size = new System.Drawing.Size(37, 39);
+            this.backButton.Size = new System.Drawing.Size(25, 25);
             this.backButton.TabIndex = 0;
             this.backButton.Text = "<";
             this.backButton.UseVisualStyleBackColor = true;
@@ -71,8 +74,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(314, 66);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button2.Location = new System.Drawing.Point(209, 43);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(0, 0);
             this.button2.TabIndex = 1;
@@ -81,10 +83,9 @@
             // 
             // goButton
             // 
-            this.goButton.Location = new System.Drawing.Point(51, 8);
-            this.goButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.goButton.Location = new System.Drawing.Point(34, 42);
             this.goButton.Name = "goButton";
-            this.goButton.Size = new System.Drawing.Size(37, 39);
+            this.goButton.Size = new System.Drawing.Size(25, 25);
             this.goButton.TabIndex = 2;
             this.goButton.Text = ">";
             this.goButton.UseVisualStyleBackColor = true;
@@ -95,30 +96,27 @@
             this.textBox1.BackColor = System.Drawing.SystemColors.Control;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(96, 18);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.textBox1.Location = new System.Drawing.Point(64, 46);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(69, 23);
+            this.textBox1.Size = new System.Drawing.Size(46, 15);
             this.textBox1.TabIndex = 3;
             this.textBox1.Text = "Path:";
             // 
             // filePathTextBox
             // 
             this.filePathTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.filePathTextBox.Location = new System.Drawing.Point(150, 14);
-            this.filePathTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.filePathTextBox.Location = new System.Drawing.Point(100, 43);
             this.filePathTextBox.Name = "filePathTextBox";
-            this.filePathTextBox.Size = new System.Drawing.Size(922, 28);
+            this.filePathTextBox.Size = new System.Drawing.Size(602, 21);
             this.filePathTextBox.TabIndex = 4;
             // 
             // listView1
             // 
             this.listView1.HideSelection = false;
             this.listView1.LargeImageList = this.iconList;
-            this.listView1.Location = new System.Drawing.Point(4, 146);
-            this.listView1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.listView1.Location = new System.Drawing.Point(3, 131);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1063, 385);
+            this.listView1.Size = new System.Drawing.Size(710, 216);
             this.listView1.SmallImageList = this.iconList;
             this.listView1.TabIndex = 13;
             this.listView1.UseCompatibleStateImageBehavior = false;
@@ -142,7 +140,9 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.textBox2);
             this.panel1.Controls.Add(this.fileTypeLabel);
+            this.panel1.Controls.Add(this.searchButton);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.fileNameLabel);
             this.panel1.Controls.Add(this.label1);
@@ -156,20 +156,20 @@
             this.panel1.Controls.Add(this.backButton);
             this.panel1.Controls.Add(this.renameButton);
             this.panel1.Controls.Add(this.pasteButton);
-            this.panel1.Location = new System.Drawing.Point(-4, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.panel1.Controls.Add(this.openRecentFileButton);
+            this.panel1.Location = new System.Drawing.Point(3, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1086, 138);
+            this.panel1.Size = new System.Drawing.Size(709, 113);
             this.panel1.TabIndex = 14;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // fileTypeLabel
             // 
             this.fileTypeLabel.AutoSize = true;
             this.fileTypeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fileTypeLabel.Location = new System.Drawing.Point(796, 88);
-            this.fileTypeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.fileTypeLabel.Location = new System.Drawing.Point(634, 91);
             this.fileTypeLabel.Name = "fileTypeLabel";
-            this.fileTypeLabel.Size = new System.Drawing.Size(22, 22);
+            this.fileTypeLabel.Size = new System.Drawing.Size(15, 15);
             this.fileTypeLabel.TabIndex = 16;
             this.fileTypeLabel.Text = "--";
             // 
@@ -177,10 +177,9 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(699, 88);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(569, 91);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(90, 22);
+            this.label3.Size = new System.Drawing.Size(59, 15);
             this.label3.TabIndex = 15;
             this.label3.Text = "File Type:";
             // 
@@ -188,10 +187,9 @@
             // 
             this.fileNameLabel.AutoSize = true;
             this.fileNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fileNameLabel.Location = new System.Drawing.Point(810, 55);
-            this.fileNameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.fileNameLabel.Location = new System.Drawing.Point(643, 70);
             this.fileNameLabel.Name = "fileNameLabel";
-            this.fileNameLabel.Size = new System.Drawing.Size(22, 22);
+            this.fileNameLabel.Size = new System.Drawing.Size(15, 15);
             this.fileNameLabel.TabIndex = 14;
             this.fileNameLabel.Text = "--";
             // 
@@ -199,84 +197,19 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(699, 55);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(569, 70);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 22);
+            this.label1.Size = new System.Drawing.Size(67, 15);
             this.label1.TabIndex = 13;
             this.label1.Text = "File Name:";
-            // 
-            // saveFileButton
-            // 
-            this.saveFileButton.Location = new System.Drawing.Point(800, 22);
-            this.saveFileButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.saveFileButton.Name = "saveFileButton";
-            this.saveFileButton.Size = new System.Drawing.Size(112, 35);
-            this.saveFileButton.TabIndex = 15;
-            this.saveFileButton.Text = "Save";
-            this.saveFileButton.UseVisualStyleBackColor = true;
-            this.saveFileButton.Click += new System.EventHandler(this.saveFileButton_Click_1);
-            // 
-            // cancelFileButton
-            // 
-            this.cancelFileButton.Location = new System.Drawing.Point(800, 62);
-            this.cancelFileButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.cancelFileButton.Name = "cancelFileButton";
-            this.cancelFileButton.Size = new System.Drawing.Size(112, 35);
-            this.cancelFileButton.TabIndex = 16;
-            this.cancelFileButton.Text = "Cancel";
-            this.cancelFileButton.UseVisualStyleBackColor = true;
-            this.cancelFileButton.Click += new System.EventHandler(this.cancelFileButton_Click_1);
-            // 
-            // saveFileName
-            // 
-            this.saveFileName.Location = new System.Drawing.Point(271, 22);
-            this.saveFileName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.saveFileName.Name = "saveFileName";
-            this.saveFileName.Size = new System.Drawing.Size(517, 26);
-            this.saveFileName.TabIndex = 17;
-            // 
-            // saveFileNameLabel
-            // 
-            this.saveFileNameLabel.AutoSize = true;
-            this.saveFileNameLabel.Location = new System.Drawing.Point(184, 31);
-            this.saveFileNameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.saveFileNameLabel.Name = "saveFileNameLabel";
-            this.saveFileNameLabel.Size = new System.Drawing.Size(84, 20);
-            this.saveFileNameLabel.TabIndex = 18;
-            this.saveFileNameLabel.Text = "File Name:";
-            // 
-            // saveFileTypeLabel
-            // 
-            this.saveFileTypeLabel.AutoSize = true;
-            this.saveFileTypeLabel.Location = new System.Drawing.Point(184, 71);
-            this.saveFileTypeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.saveFileTypeLabel.Name = "saveFileTypeLabel";
-            this.saveFileTypeLabel.Size = new System.Drawing.Size(273, 20);
-            this.saveFileTypeLabel.TabIndex = 19;
-            this.saveFileTypeLabel.Text = "File Type: Text document (*.txt; *.TXT)";
-            // 
-            // saveFilePanel
-            // 
-            this.saveFilePanel.Controls.Add(this.saveFileName);
-            this.saveFilePanel.Controls.Add(this.saveFileTypeLabel);
-            this.saveFilePanel.Controls.Add(this.saveFileButton);
-            this.saveFilePanel.Controls.Add(this.saveFileNameLabel);
-            this.saveFilePanel.Controls.Add(this.cancelFileButton);
-            this.saveFilePanel.Location = new System.Drawing.Point(4, 542);
-            this.saveFilePanel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.saveFilePanel.Name = "saveFilePanel";
-            this.saveFilePanel.Size = new System.Drawing.Size(1063, 112);
-            this.saveFilePanel.TabIndex = 20;
             // 
             // newFileButton
             // 
             this.newFileButton.Image = global::HoneyOS.Properties.Resources.New_Copy;
             this.newFileButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.newFileButton.Location = new System.Drawing.Point(9, 55);
-            this.newFileButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.newFileButton.Location = new System.Drawing.Point(6, 70);
             this.newFileButton.Name = "newFileButton";
-            this.newFileButton.Size = new System.Drawing.Size(126, 55);
+            this.newFileButton.Size = new System.Drawing.Size(84, 36);
             this.newFileButton.TabIndex = 7;
             this.newFileButton.Text = "New File";
             this.newFileButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -287,10 +220,9 @@
             // 
             this.cutButton.Image = global::HoneyOS.Properties.Resources.Cut;
             this.cutButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.cutButton.Location = new System.Drawing.Point(136, 55);
-            this.cutButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cutButton.Location = new System.Drawing.Point(91, 70);
             this.cutButton.Name = "cutButton";
-            this.cutButton.Size = new System.Drawing.Size(93, 55);
+            this.cutButton.Size = new System.Drawing.Size(62, 36);
             this.cutButton.TabIndex = 8;
             this.cutButton.Text = "Cut";
             this.cutButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -301,10 +233,9 @@
             // 
             this.deleteButton.Image = global::HoneyOS.Properties.Resources.delete;
             this.deleteButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.deleteButton.Location = new System.Drawing.Point(568, 55);
-            this.deleteButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.deleteButton.Location = new System.Drawing.Point(379, 70);
             this.deleteButton.Name = "deleteButton";
-            this.deleteButton.Size = new System.Drawing.Size(107, 55);
+            this.deleteButton.Size = new System.Drawing.Size(71, 36);
             this.deleteButton.TabIndex = 12;
             this.deleteButton.Text = "Delete";
             this.deleteButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -315,10 +246,9 @@
             // 
             this.copyButton.Image = global::HoneyOS.Properties.Resources.Copy;
             this.copyButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.copyButton.Location = new System.Drawing.Point(231, 55);
-            this.copyButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.copyButton.Location = new System.Drawing.Point(154, 70);
             this.copyButton.Name = "copyButton";
-            this.copyButton.Size = new System.Drawing.Size(102, 55);
+            this.copyButton.Size = new System.Drawing.Size(68, 36);
             this.copyButton.TabIndex = 9;
             this.copyButton.Text = "Copy";
             this.copyButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -329,10 +259,9 @@
             // 
             this.renameButton.Image = global::HoneyOS.Properties.Resources.rename_icon;
             this.renameButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.renameButton.Location = new System.Drawing.Point(441, 55);
-            this.renameButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.renameButton.Location = new System.Drawing.Point(294, 70);
             this.renameButton.Name = "renameButton";
-            this.renameButton.Size = new System.Drawing.Size(126, 55);
+            this.renameButton.Size = new System.Drawing.Size(84, 36);
             this.renameButton.TabIndex = 11;
             this.renameButton.Text = "Rename";
             this.renameButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -343,27 +272,128 @@
             // 
             this.pasteButton.Image = global::HoneyOS.Properties.Resources.Paste;
             this.pasteButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.pasteButton.Location = new System.Drawing.Point(334, 55);
-            this.pasteButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pasteButton.Location = new System.Drawing.Point(223, 70);
             this.pasteButton.Name = "pasteButton";
-            this.pasteButton.Size = new System.Drawing.Size(104, 55);
+            this.pasteButton.Size = new System.Drawing.Size(69, 36);
             this.pasteButton.TabIndex = 10;
             this.pasteButton.Text = "Paste";
             this.pasteButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.pasteButton.UseVisualStyleBackColor = true;
             this.pasteButton.Click += new System.EventHandler(this.pasteButton_Click_1);
             // 
+            // openRecentFileButton
+            // 
+            this.openRecentFileButton.Image = global::HoneyOS.Properties.Resources.Paste;
+            this.openRecentFileButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.openRecentFileButton.Location = new System.Drawing.Point(451, 70);
+            this.openRecentFileButton.Margin = new System.Windows.Forms.Padding(2);
+            this.openRecentFileButton.Name = "openRecentFileButton";
+            this.openRecentFileButton.Size = new System.Drawing.Size(103, 36);
+            this.openRecentFileButton.TabIndex = 4;
+            this.openRecentFileButton.Text = "Open Recent";
+            this.openRecentFileButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.openRecentFileButton.UseVisualStyleBackColor = true;
+            this.openRecentFileButton.Click += new System.EventHandler(this.openRecentFileButton_Click);
+            // 
+            // searchBar
+            // 
+            this.searchBar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchBar.Location = new System.Drawing.Point(61, 22);
+            this.searchBar.Name = "searchBar";
+            this.searchBar.Size = new System.Drawing.Size(609, 21);
+            this.searchBar.TabIndex = 21;
+            // 
+            // searchButton
+            // 
+            this.searchButton.Image = global::HoneyOS.Properties.Resources.SEARCH_icon;
+            this.searchButton.Location = new System.Drawing.Point(673, 6);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(29, 31);
+            this.searchButton.TabIndex = 4;
+            this.searchButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
+            // 
+            // saveFileButton
+            // 
+            this.saveFileButton.Location = new System.Drawing.Point(533, 14);
+            this.saveFileButton.Name = "saveFileButton";
+            this.saveFileButton.Size = new System.Drawing.Size(75, 23);
+            this.saveFileButton.TabIndex = 15;
+            this.saveFileButton.Text = "Save";
+            this.saveFileButton.UseVisualStyleBackColor = true;
+            this.saveFileButton.Click += new System.EventHandler(this.saveFileButton_Click_1);
+            // 
+            // cancelFileButton
+            // 
+            this.cancelFileButton.Location = new System.Drawing.Point(533, 40);
+            this.cancelFileButton.Name = "cancelFileButton";
+            this.cancelFileButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelFileButton.TabIndex = 16;
+            this.cancelFileButton.Text = "Cancel";
+            this.cancelFileButton.UseVisualStyleBackColor = true;
+            this.cancelFileButton.Click += new System.EventHandler(this.cancelFileButton_Click_1);
+            // 
+            // saveFileName
+            // 
+            this.saveFileName.Location = new System.Drawing.Point(181, 14);
+            this.saveFileName.Name = "saveFileName";
+            this.saveFileName.Size = new System.Drawing.Size(346, 20);
+            this.saveFileName.TabIndex = 17;
+            // 
+            // saveFileNameLabel
+            // 
+            this.saveFileNameLabel.AutoSize = true;
+            this.saveFileNameLabel.Location = new System.Drawing.Point(123, 20);
+            this.saveFileNameLabel.Name = "saveFileNameLabel";
+            this.saveFileNameLabel.Size = new System.Drawing.Size(57, 13);
+            this.saveFileNameLabel.TabIndex = 18;
+            this.saveFileNameLabel.Text = "File Name:";
+            // 
+            // saveFileTypeLabel
+            // 
+            this.saveFileTypeLabel.AutoSize = true;
+            this.saveFileTypeLabel.Location = new System.Drawing.Point(123, 46);
+            this.saveFileTypeLabel.Name = "saveFileTypeLabel";
+            this.saveFileTypeLabel.Size = new System.Drawing.Size(188, 13);
+            this.saveFileTypeLabel.TabIndex = 19;
+            this.saveFileTypeLabel.Text = "File Type: Text document (*.txt; *.TXT)";
+            // 
+            // saveFilePanel
+            // 
+            this.saveFilePanel.Controls.Add(this.saveFileName);
+            this.saveFilePanel.Controls.Add(this.saveFileTypeLabel);
+            this.saveFilePanel.Controls.Add(this.saveFileButton);
+            this.saveFilePanel.Controls.Add(this.saveFileNameLabel);
+            this.saveFilePanel.Controls.Add(this.cancelFileButton);
+            this.saveFilePanel.Location = new System.Drawing.Point(3, 352);
+            this.saveFilePanel.Name = "saveFilePanel";
+            this.saveFilePanel.Size = new System.Drawing.Size(709, 73);
+            this.saveFilePanel.TabIndex = 20;
+            // 
+            // textBox2
+            // 
+            this.textBox2.BackColor = System.Drawing.SystemColors.Control;
+            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.Location = new System.Drawing.Point(6, 13);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(46, 15);
+            this.textBox2.TabIndex = 17;
+            this.textBox2.Text = "Search:";
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
             // Form5
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1076, 660);
+            this.ClientSize = new System.Drawing.Size(717, 429);
+            this.Controls.Add(this.searchBar);
             this.Controls.Add(this.saveFilePanel);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.button2);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form5";
             this.Text = "File Manager";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form5_FormClosed);
@@ -373,6 +403,7 @@
             this.saveFilePanel.ResumeLayout(false);
             this.saveFilePanel.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -402,5 +433,11 @@
         private System.Windows.Forms.Label saveFileNameLabel;
         private System.Windows.Forms.Label saveFileTypeLabel;
         private System.Windows.Forms.Panel saveFilePanel;
+
+        // Alex added new Search File button and Open Recent File button 4/7/2025
+        private System.Windows.Forms.TextBox searchBar;
+        private System.Windows.Forms.Button searchButton;
+        private System.Windows.Forms.Button openRecentFileButton;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }

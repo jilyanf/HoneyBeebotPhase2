@@ -21,13 +21,13 @@ namespace HoneyOS
         private Desktop desktopInstance;
         private string filePath = "C:\\";
         private bool isFile = false;
-        public bool isSaved = false; 
+        public bool isSaved = false;
         private string currentlySelectedItemName = "";
+        private string recentFilePath = ""; // Store the path of the most recently accessed file
 
         private string cutItemPath = "";     // To remember the item being cut
         private string copiedItemPath = "";  // To remember the item being copied
         private string fileContent;
-
 
         List<string> phrases = new List<string>
         {
@@ -40,6 +40,10 @@ namespace HoneyOS
             "paste the file please",            // paste the cut/copied file into current directory
             "rename this file please",          // rename the selected file
             "close this please",                // close the file manager
+
+            // Alex added new Search File and Open Recent File Voice Commands 4/7/2025
+            "search file please",               // search for a file
+            "open recent file please",          // open the most recently accessed file
         };
 
         bool isListeningForAction;          // if true, that means "honey" is already heard and the speech engine is now listening for a command
@@ -77,6 +81,13 @@ namespace HoneyOS
             //for rename files
             renameButton.Click += renameButton_Click;
 
+            // Alex added new Search File button and bar and Open Recent File bar 4/7/2025
+            // Add open recent file button click event
+            openRecentFileButton.Click += openRecentFileButton_Click;
+
+            // Add search button click event
+            searchButton.Click += searchButton_Click;
+
             Timer updateTimer = new Timer();
             updateTimer.Interval = 1000; // 1000 milliseconds = 1 second
             updateTimer.Tick += (s, ev) => Form5Update(); // Lambda expression to call the Update function
@@ -84,6 +95,7 @@ namespace HoneyOS
 
             SpeechRecognition_Load();
         }
+
         private void timer_Tick(object sender, EventArgs e)
         {
             Form5Update(); // Call the update function
@@ -163,38 +175,50 @@ namespace HoneyOS
                 switch (e.Result.Text.ToLower()) // for each case, create a corresponding function
                 {
                     case "create new file please":
-                        MessageBox.Show("Sure, i'll create one for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Sure, I'll create one for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         EventArgs args = new EventArgs();
                         newFileButton_Click_1(sender, args);
                         isListeningForAction = false;
                         break;
                     case "cut this file please":
-                        MessageBox.Show("Sure, i'll cut this for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Sure, I'll cut this for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         EventArgs args2 = new EventArgs();
                         cutButton_Click_1(sender, args2);
                         isListeningForAction = false;
                         break;
                     case "copy this file please":
-                        MessageBox.Show("Sure, i'll copy this for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Sure, I'll copy this for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         EventArgs args3 = new EventArgs();
                         copyButton_Click_1(sender, args3);
                         isListeningForAction = false;
                         break;
                     case "paste the file please":
-                        MessageBox.Show("Sure, i'll paste it for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Sure, I'll paste it for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         EventArgs args4 = new EventArgs();
                         pasteButton_Click_1(sender, args4);
                         isListeningForAction = false;
                         break;
                     case "rename this file please":
-                        MessageBox.Show("Sure, i'll rename this for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Sure, I'll rename this for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         EventArgs args5 = new EventArgs();
                         renameButton_Click_1(sender, args5);
                         isListeningForAction = false;
                         break;
                     case "close this please":
-                        MessageBox.Show("Sure, i'll close this for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Sure, I'll close this for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         this.Close();
+                        isListeningForAction = false;
+                        break;
+
+                    // Alex added new Search File and Open Recent File Voice Recognition Command 4/7/2025
+                    case "search file please":
+                        MessageBox.Show("Sure, I'll search for the file dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        SearchFileFunction();
+                        isListeningForAction = false;
+                        break;
+                    case "open recent file please":
+                        MessageBox.Show("Sure, I'll open the most recent file dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        OpenRecentFileFunction();
                         isListeningForAction = false;
                         break;
                     default:
@@ -203,6 +227,48 @@ namespace HoneyOS
                 }
         }
 
+        // Alex added new Search File function and Open Recent File Function 4/7/2025
+        private void SearchFileFunction()
+        {
+            string searchQuery = searchBar.Text; // Use the text from the search bar
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                SearchFile(searchQuery);
+            }
+        }
+
+        private void OpenRecentFileFunction()
+        {
+            if (!string.IsNullOrEmpty(recentFilePath))
+            {
+                Form7 textEditorForm = new Form7(desktopInstance);
+                textEditorForm.openFile(recentFilePath);
+                textEditorForm.Show();
+            }
+            else
+            {
+                MessageBox.Show("No recent file found.", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void SearchFile(string fileName)
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(filePath);
+            FileInfo[] files = dirInfo.GetFiles(fileName, SearchOption.AllDirectories);
+
+            if (files.Length > 0)
+            {
+                listView1.Items.Clear();
+                foreach (FileInfo file in files)
+                {
+                    listView1.Items.Add(file.Name);
+                }
+            }
+            else
+            {
+                MessageBox.Show("No files found with the name: " + fileName, "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
 
         public void loadFilesAndDirectories() //loads file and directories O - O
         {
@@ -607,9 +673,20 @@ namespace HoneyOS
             }
         }
 
-       
 
-        
+        // Alex added new Search File and Open Recent File button click event 4/7/2025
+        // Event handler for search button click
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            SearchFileFunction();
+        }
+
+        // Event handler for open recent file button click
+        private void openRecentFileButton_Click(object sender, EventArgs e)
+        {
+            OpenRecentFileFunction();
+        }
+
         private string GetNewNameFromUser(string currentName)
         {
             // Display an input dialog to get the new name from the user
@@ -907,6 +984,16 @@ namespace HoneyOS
         {
             recognizer.Dispose();
             desktopInstance?.HideFileManagerToolStripMenuItem(); // Call the method to hide filemanagerToolStripMenuItem on Desktop form
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
