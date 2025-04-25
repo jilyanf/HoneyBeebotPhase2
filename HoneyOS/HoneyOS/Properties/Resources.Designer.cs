@@ -273,6 +273,16 @@ namespace HoneyOS.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap openRecent {
+            get {
+                object obj = ResourceManager.GetObject("openRecent", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Paste {
             get {
                 object obj = ResourceManager.GetObject("Paste", resourceCulture);
@@ -349,20 +359,7 @@ namespace HoneyOS.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-
-        // Alex added new Search File button and bar and Open Recent File bar 4/7/2025
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Open_Recent
-        {
-            get
-            {
-                object obj = ResourceManager.GetObject("openRecent", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
@@ -509,6 +506,16 @@ namespace HoneyOS.Properties {
         internal static System.Drawing.Bitmap Welcome_Screen_Static_ {
             get {
                 object obj = ResourceManager.GetObject("Welcome Screen[Static]", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Welcome_Screen1 {
+            get {
+                object obj = ResourceManager.GetObject("Welcome Screen1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

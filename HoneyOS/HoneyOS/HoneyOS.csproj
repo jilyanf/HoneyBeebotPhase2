@@ -294,6 +294,7 @@
     <None Include="Resources\Pause.png" />
     <None Include="Resources\Next.png" />
     <None Include="Resources\Drop Down.png" />
+    <None Include="Resources\openRecent.png" />
     <Content Include="Resources\StartButton [Default].png" />
     <None Include="Resources\Transition %288%29.png" />
     <None Include="Resources\StartButton [Hovered].png" />
