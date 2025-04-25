@@ -314,6 +314,7 @@ namespace HoneyOS
             ProgressBar progressBar = new ProgressBar
             {
                 Style = ProgressBarStyle.Marquee,
+                Margin = new Padding(10), // Adds a margin of 10 pixels on all sides
                 MarqueeAnimationSpeed = 30,
                 Dock = DockStyle.Top,
                 Height = 20
