@@ -38,7 +38,9 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.iconList = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.fileTypeLabel = new System.Windows.Forms.Label();
+            this.searchButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.fileNameLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -50,14 +52,12 @@
             this.pasteButton = new System.Windows.Forms.Button();
             this.openRecentFileButton = new System.Windows.Forms.Button();
             this.searchBar = new System.Windows.Forms.TextBox();
-            this.searchButton = new System.Windows.Forms.Button();
             this.saveFileButton = new System.Windows.Forms.Button();
             this.cancelFileButton = new System.Windows.Forms.Button();
             this.saveFileName = new System.Windows.Forms.TextBox();
             this.saveFileNameLabel = new System.Windows.Forms.Label();
             this.saveFileTypeLabel = new System.Windows.Forms.Label();
             this.saveFilePanel = new System.Windows.Forms.Panel();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.saveFilePanel.SuspendLayout();
             this.SuspendLayout();
@@ -163,6 +163,18 @@
             this.panel1.TabIndex = 14;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // textBox2
+            // 
+            this.textBox2.BackColor = System.Drawing.SystemColors.Control;
+            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox2.Location = new System.Drawing.Point(6, 13);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(46, 15);
+            this.textBox2.TabIndex = 17;
+            this.textBox2.Text = "Search:";
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
             // fileTypeLabel
             // 
             this.fileTypeLabel.AutoSize = true;
@@ -172,6 +184,17 @@
             this.fileTypeLabel.Size = new System.Drawing.Size(15, 15);
             this.fileTypeLabel.TabIndex = 16;
             this.fileTypeLabel.Text = "--";
+            // 
+            // searchButton
+            // 
+            this.searchButton.Image = global::HoneyOS.Properties.Resources.SEARCH_icon;
+            this.searchButton.Location = new System.Drawing.Point(673, 6);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(29, 31);
+            this.searchButton.TabIndex = 4;
+            this.searchButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // label3
             // 
@@ -303,17 +326,6 @@
             this.searchBar.Size = new System.Drawing.Size(609, 21);
             this.searchBar.TabIndex = 21;
             // 
-            // searchButton
-            // 
-            this.searchButton.Image = global::HoneyOS.Properties.Resources.SEARCH_icon;
-            this.searchButton.Location = new System.Drawing.Point(673, 6);
-            this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(29, 31);
-            this.searchButton.TabIndex = 4;
-            this.searchButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.searchButton.UseVisualStyleBackColor = true;
-            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
-            // 
             // saveFileButton
             // 
             this.saveFileButton.Location = new System.Drawing.Point(533, 14);
@@ -370,18 +382,6 @@
             this.saveFilePanel.Name = "saveFilePanel";
             this.saveFilePanel.Size = new System.Drawing.Size(709, 73);
             this.saveFilePanel.TabIndex = 20;
-            // 
-            // textBox2
-            // 
-            this.textBox2.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(6, 13);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(46, 15);
-            this.textBox2.TabIndex = 17;
-            this.textBox2.Text = "Search:";
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // Form5
             // 

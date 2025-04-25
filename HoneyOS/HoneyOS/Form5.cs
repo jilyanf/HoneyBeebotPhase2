@@ -83,9 +83,11 @@ namespace HoneyOS
 
             // Alex added new Search File button and bar and Open Recent File bar 4/7/2025
             // Add open recent file button click event
+            openRecentFileButton.Click -= openRecentFileButton_Click;
             openRecentFileButton.Click += openRecentFileButton_Click;
 
             // Add search button click event
+            searchButton.Click -= searchButton_Click;
             searchButton.Click += searchButton_Click;
 
             Timer updateTimer = new Timer();
@@ -230,44 +232,179 @@ namespace HoneyOS
         // Alex added new Search File function and Open Recent File Function 4/7/2025
         private void SearchFileFunction()
         {
-            string searchQuery = searchBar.Text; // Use the text from the search bar
-            if (!string.IsNullOrEmpty(searchQuery))
+            try
             {
-                SearchFile(searchQuery);
+                string searchQuery = searchBar.Text; // Use the text from the search bar
+                if (!string.IsNullOrEmpty(searchQuery))
+                {
+                    SearchFile(searchQuery);
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a valid search query.", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while searching for the file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void OpenRecentFileFunction()
         {
-            if (!string.IsNullOrEmpty(recentFilePath))
+            try
             {
-                Form7 textEditorForm = new Form7(desktopInstance);
-                textEditorForm.openFile(recentFilePath);
-                textEditorForm.Show();
+                if (!string.IsNullOrEmpty(Desktop.RecentFilePath))
+                {
+                    if (File.Exists(Desktop.RecentFilePath))
+                    {
+                        Form7 textEditorForm = new Form7(desktopInstance);
+                        textEditorForm.openFile(Desktop.RecentFilePath);
+                        textEditorForm.Show();
+                    }
+                    else
+                    {
+                        MessageBox.Show("The recent file no longer exists or is inaccessible.", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No recent file found.", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-            else
+            catch (UnauthorizedAccessException ex)
             {
-                MessageBox.Show("No recent file found.", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Access denied to the recent file. " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while opening the recent file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        // Alex added: "This threadifying method is safe, it does not interfere with the system's scheduling and job queue policies
+        // and operates on a different background thread
         private void SearchFile(string fileName)
         {
-            DirectoryInfo dirInfo = new DirectoryInfo(filePath);
-            FileInfo[] files = dirInfo.GetFiles(fileName, SearchOption.AllDirectories);
+            // Create a loading dialog
+            Form loadingDialog = new Form
+            {
+                Size = new Size(300, 150),
+                StartPosition = FormStartPosition.CenterScreen,
+                FormBorderStyle = FormBorderStyle.None,
+                BackColor = Color.FromArgb(255, 243, 222), // Match the theme color
+                TopMost = true
+            };
 
-            if (files.Length > 0)
+            // Add a label to the dialog
+            Label loadingLabel = new Label
             {
-                listView1.Items.Clear();
-                foreach (FileInfo file in files)
+                Text = "Searching, please wait...",
+                AutoSize = false,
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                ForeColor = Color.FromArgb(0, 0, 0), // Match the theme color
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Top,
+                Height = 50
+            };
+
+            // Add a circular ProgressBar to the dialog
+            ProgressBar loadingProgressBar = new ProgressBar
+            {
+                Style = ProgressBarStyle.Marquee,
+                MarqueeAnimationSpeed = 30,
+                Dock = DockStyle.Fill,
+                BackColor = Color.White,
+                ForeColor = Color.FromArgb(255, 234, 177) // Match the theme color
+            };
+
+            // Add controls to the dialog
+            loadingDialog.Controls.Add(loadingProgressBar);
+            loadingDialog.Controls.Add(loadingLabel);
+
+            // Run the search in a separate thread
+            Task.Run(() =>
+            {
+                try
                 {
-                    listView1.Items.Add(file.Name);
+                    DirectoryInfo dirInfo = new DirectoryInfo(filePath);
+                    var files = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories)
+                                       .Where(file =>
+                                           !file.DirectoryName.Contains("$Recycle.Bin") && // Exclude System Recycle Bin
+                                           (file.Attributes & FileAttributes.System) == 0 && // Exclude system files
+                                           (file.Attributes & FileAttributes.Hidden) == 0 && // Exclude hidden files
+                                           file.Name.IndexOf(fileName, StringComparison.OrdinalIgnoreCase) >= 0 // Substring match
+                                       )
+                                       .ToArray();
+
+                    // Update the UI on the main thread
+                    Invoke(new Action(() =>
+                    {
+                        listView1.Items.Clear();
+
+                        foreach (FileInfo file in files)
+                        {
+                            // Determine the icon index based on file type
+                            int iconIndex = 7; // Default icon index
+                            string extension = file.Extension.ToUpper();
+
+                            if (extension == ".TXT")
+                            {
+                                iconIndex = 8; // Text file icon
+                            }
+                            else if (extension == ".MP3" || extension == ".MP2")
+                            {
+                                iconIndex = 3; // Audio file icon
+                            }
+                            else if (extension == ".EXE" || extension == ".COM")
+                            {
+                                iconIndex = 1; // Executable file icon
+                            }
+                            else if (extension == ".MP4" || extension == ".AVI" || extension == ".MKV")
+                            {
+                                iconIndex = 4; // Video file icon
+                            }
+                            else if (extension == ".PDF")
+                            {
+                                iconIndex = 5; // PDF file icon
+                            }
+                            else if (extension == ".DOC" || extension == ".DOCX")
+                            {
+                                iconIndex = 0; // Document file icon
+                            }
+                            else if (extension == ".PNG" || extension == ".JPG" || extension == ".JPEG")
+                            {
+                                iconIndex = 6; // Image file icon
+                            }
+
+                            // Add the file to the ListView with the appropriate icon
+                            listView1.Items.Add(new ListViewItem(file.Name, iconIndex));
+                        }
+
+                        // Close the loading dialog
+                        loadingDialog.Close();
+                    }));
                 }
-            }
-            else
-            {
-                MessageBox.Show("No files found with the name: " + fileName, "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+                catch (UnauthorizedAccessException ex)
+                {
+                    Invoke(new Action(() =>
+                    {
+                        MessageBox.Show("Access denied to some directories. Please try a user-accessible directory. " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        loadingDialog.Close();
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    Invoke(new Action(() =>
+                    {
+                        MessageBox.Show("An error occurred while searching for the file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        loadingDialog.Close();
+                    }));
+                }
+            });
+
+            // Show the loading dialog
+            loadingDialog.ShowDialog();
         }
 
         public void loadFilesAndDirectories() //loads file and directories O - O
@@ -291,6 +428,9 @@ namespace HoneyOS
                     // Check if the selected file is a text file
                     if (Path.GetExtension(tempFilePath).ToLower() == ".txt")
                     {
+                        // Save the path of the recently opened file in Desktop.RecentFilePath, Alex added 4/25/2025
+                        Desktop.RecentFilePath = tempFilePath;
+
                         // Open Form7 (text editor)
                         if (textEditorForm != null) // Check if reference is valid
                         {
@@ -304,68 +444,62 @@ namespace HoneyOS
                         this.Close();
                     }
 
-                    // Process.Start(tempFilePath);
+                    // Process.Start(tempFilePath); // Original code for opening files
                 }
                 else
                 {
                     fileAttr = File.GetAttributes(filePath);
-
                 }
 
                 if ((fileAttr & FileAttributes.Directory) == FileAttributes.Directory)
                 {
                     fileList = new DirectoryInfo(filePath);
-                    FileInfo[] files = fileList.GetFiles(); // get all the file
+                    FileInfo[] files = fileList.GetFiles(); // get all the files
                     DirectoryInfo[] dirs = fileList.GetDirectories(); // get all the directories
-                    string fileExtension = "";
 
                     listView1.Items.Clear();
 
                     for (int i = 0; i < files.Length; i++)
                     {
-                        //fileExtension = files[i].Extension.ToUpper();
+                        string currentFileExtension = files[i].Extension.ToUpper(); // Renamed variable to avoid conflict
 
-                        /*switch (fileExtension)
+                        switch (currentFileExtension)
                         {
-                            /*case ".MP3":
+                            case ".MP3":
                             case ".MP2":
-                                listView1.Items.Add(files[i].Name, 3);
+                                listView1.Items.Add(files[i].Name, 3); // Audio file icon
                                 break;
                             case ".EXE":
                             case ".COM":
-                                listView1.Items.Add(files[i].Name, 1);
+                                listView1.Items.Add(files[i].Name, 1); // Executable file icon
                                 break;
-                            case "MP4":
+                            case ".MP4":
                             case ".AVI":
                             case ".MKV":
-                                listView1.Items.Add(files[i].Name, 4);
+                                listView1.Items.Add(files[i].Name, 4); // Video file icon
                                 break;
                             case ".PDF":
-                                listView1.Items.Add(files[i].Name, 5);
+                                listView1.Items.Add(files[i].Name, 5); // PDF file icon
                                 break;
                             case ".DOC":
                             case ".DOCX":
-                                listView1.Items.Add(files[i].Name, 0);
+                                listView1.Items.Add(files[i].Name, 0); // Document file icon
                                 break;
                             case ".PNG":
                             case ".JPG":
                             case ".JPEG":
-                                listView1.Items.Add(files[i].Name, 6);
+                                listView1.Items.Add(files[i].Name, 6); // Image file icon
                                 break;
-
+                            case ".TXT":
+                                listView1.Items.Add(files[i].Name, 8); // Text file icon
+                                break;
                             default:
-                                listView1.Items.Add(files[i].Name, 7);
+                                listView1.Items.Add(files[i].Name, 7); // Default icon
                                 break;
-                        }*/
-
-                        if (files[i].Extension.ToUpper() == ".TXT")
-                        {
-                            listView1.Items.Add(files[i].Name, 8); //display txt file (hopefully)
                         }
-
                     }
 
-                    for (int i = 0; i < dirs.Length; i++) 
+                    for (int i = 0; i < dirs.Length; i++)
                     {
                         listView1.Items.Add(dirs[i].Name, 2); //display the directories
                     }
@@ -373,14 +507,12 @@ namespace HoneyOS
                 else
                 {
                     fileNameLabel.Text = this.currentlySelectedItemName;
-
                 }
             }
             catch (Exception e)
             {
-
+                MessageBox.Show("An error occurred while loading files and directories: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         public void loadButtonAction()
