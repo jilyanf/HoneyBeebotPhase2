@@ -349,20 +349,7 @@ namespace HoneyOS.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-
-        // Alex added new Search File button and bar and Open Recent File bar 4/7/2025
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Open_Recent
-        {
-            get
-            {
-                object obj = ResourceManager.GetObject("openRecent", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>

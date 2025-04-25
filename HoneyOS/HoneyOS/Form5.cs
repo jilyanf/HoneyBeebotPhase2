@@ -286,41 +286,42 @@ namespace HoneyOS
         // and operates on a different background thread
         private void SearchFile(string fileName)
         {
-            // Create a loading dialog
-            Form loadingDialog = new Form
+            // Create a custom dialog for search progress
+            Form progressDialog = new Form
             {
-                Size = new Size(300, 150),
+                Size = new Size(400, 150),
                 StartPosition = FormStartPosition.CenterScreen,
-                FormBorderStyle = FormBorderStyle.None,
-                BackColor = Color.FromArgb(255, 243, 222), // Match the theme color
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = "Searching...",
+                MaximizeBox = false,
+                MinimizeBox = false,
+                ShowInTaskbar = false,
                 TopMost = true
             };
 
-            // Add a label to the dialog
-            Label loadingLabel = new Label
+            // Add a label to display the search status
+            Label statusLabel = new Label
             {
-                Text = "Searching, please wait...",
+                Text = "Searching for files, please wait...",
                 AutoSize = false,
-                Font = new Font("Arial", 12, FontStyle.Bold),
-                ForeColor = Color.FromArgb(0, 0, 0), // Match the theme color
+                Font = new Font("Segoe UI", 10, FontStyle.Regular),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Dock = DockStyle.Top,
-                Height = 50
+                Height = 40
             };
 
-            // Add a circular ProgressBar to the dialog
-            ProgressBar loadingProgressBar = new ProgressBar
+            // Add a ProgressBar to indicate progress
+            ProgressBar progressBar = new ProgressBar
             {
                 Style = ProgressBarStyle.Marquee,
                 MarqueeAnimationSpeed = 30,
-                Dock = DockStyle.Fill,
-                BackColor = Color.White,
-                ForeColor = Color.FromArgb(255, 234, 177) // Match the theme color
+                Dock = DockStyle.Top,
+                Height = 20
             };
 
             // Add controls to the dialog
-            loadingDialog.Controls.Add(loadingProgressBar);
-            loadingDialog.Controls.Add(loadingLabel);
+            progressDialog.Controls.Add(progressBar);
+            progressDialog.Controls.Add(statusLabel);
 
             // Run the search in a separate thread
             Task.Run(() =>
@@ -382,7 +383,7 @@ namespace HoneyOS
                         }
 
                         // Close the loading dialog
-                        loadingDialog.Close();
+                        progressDialog.Close();
                     }));
                 }
                 catch (UnauthorizedAccessException ex)
@@ -390,7 +391,7 @@ namespace HoneyOS
                     Invoke(new Action(() =>
                     {
                         MessageBox.Show("Access denied to some directories. Please try a user-accessible directory. " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        loadingDialog.Close();
+                        progressDialog.Close();
                     }));
                 }
                 catch (Exception ex)
@@ -398,13 +399,13 @@ namespace HoneyOS
                     Invoke(new Action(() =>
                     {
                         MessageBox.Show("An error occurred while searching for the file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        loadingDialog.Close();
+                        progressDialog.Close();
                     }));
                 }
             });
 
             // Show the loading dialog
-            loadingDialog.ShowDialog();
+            progressDialog.ShowDialog();
         }
 
         public void loadFilesAndDirectories() //loads file and directories O - O
