@@ -41,6 +41,10 @@ namespace HoneyOS
             isListeningForAction = false;
             isListening = false;
         }
+
+        // Alex added global RecentFilePath 4/25/2025
+        public static string RecentFilePath { get; set; } = ""; // Static field to store the recent file 
+
         private void Desktop_Load(object sender, EventArgs e)
         {
             // Disable the visibility of the notepad and filemanager icon on the taskbar
