@@ -289,7 +289,7 @@ namespace HoneyOS
             // Create a custom dialog for search progress
             Form progressDialog = new Form
             {
-                Size = new Size(400, 150),
+                Size = new Size(400, 130),
                 StartPosition = FormStartPosition.CenterScreen,
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 Text = "Searching...",
@@ -310,18 +310,28 @@ namespace HoneyOS
                 Height = 40
             };
 
-            // Add a ProgressBar to indicate progress
+            // Create a Panel to contain the ProgressBar
+            Panel progressBarContainer = new Panel
+            {
+                Dock = DockStyle.Top,
+                Padding = new Padding(20, 0, 20, 0), // Add padding on the left and right
+                Height = 20 // Adjust height to fit the ProgressBar
+            };
+
+            // Add a ProgressBar to the Panel
             ProgressBar progressBar = new ProgressBar
             {
                 Style = ProgressBarStyle.Marquee,
-                Margin = new Padding(10), // Adds a margin of 10 pixels on all sides
                 MarqueeAnimationSpeed = 30,
-                Dock = DockStyle.Top,
+                Dock = DockStyle.Fill, // Fill the container while respecting padding
                 Height = 20
             };
 
+            // Add the ProgressBar to the Panel
+            progressBarContainer.Controls.Add(progressBar);
+
             // Add controls to the dialog
-            progressDialog.Controls.Add(progressBar);
+            progressDialog.Controls.Add(progressBarContainer);
             progressDialog.Controls.Add(statusLabel);
 
             // Run the search in a separate thread
