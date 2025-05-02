@@ -245,6 +245,10 @@ namespace HoneyOS
         {
             OpenNotepadFunction();
         }
+        private void button5_click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Button5 clicked"); 
+        }
 
         // Event handler when the Notepad button in the taskbar is clicked
         private void notepadToolStripMenuItem1_Click(object sender, EventArgs e)
