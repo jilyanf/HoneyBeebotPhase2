@@ -452,3 +452,4 @@ C:\Users\angel\Source\Repos\HoneyBeebotPhase2\HoneyOS\HoneyOS\obj\Debug\HoneyOS.
 C:\Users\angel\Source\Repos\HoneyBeebotPhase2\HoneyOS\HoneyOS\obj\Debug\HoneyOS.exe
 C:\Users\angel\Source\Repos\HoneyBeebotPhase2\HoneyOS\HoneyOS\obj\Debug\HoneyOS.pdb
 C:\Users\angel\Source\Repos\HoneyBeebotPhase2\HoneyOS\HoneyOS\bin\Debug\HoneyOS.pdb
+C:\Users\figue\Downloads\HoneyBeebotPhase2\HoneyOS\HoneyOS\obj\Debug\HoneyOS.Form4.resources

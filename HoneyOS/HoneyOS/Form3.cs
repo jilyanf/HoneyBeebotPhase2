@@ -30,6 +30,7 @@ namespace HoneyOS
         List<Form5> file_managers = new List<Form5>();
         List<Form6> task_manager = new List<Form6>();
         List<Form8> menu = new List<Form8>();       //delete this after
+        List<Form4> recycle_bin = new List<Form4>();
 
         // Get the power status of the device
         PowerStatus ps = SystemInformation.PowerStatus;
@@ -245,10 +246,12 @@ namespace HoneyOS
         {
             OpenNotepadFunction();
         }
-        private void button5_click(object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Button5 clicked"); 
+            Form4 recycleBinForm = new Form4();
+            recycleBinForm.Show();
         }
+
 
         // Event handler when the Notepad button in the taskbar is clicked
         private void notepadToolStripMenuItem1_Click(object sender, EventArgs e)
