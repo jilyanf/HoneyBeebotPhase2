@@ -734,23 +734,54 @@ namespace HoneyOS
                 if ((fileAttr & FileAttributes.Directory) == FileAttributes.Directory)
                 {
                     fileList = new DirectoryInfo(filePath);
-                    FileInfo[] files = fileList.GetFiles(); // get all the files
-                    DirectoryInfo[] dirs = fileList.GetDirectories(); // get all the directories
-                    string fileExtension = "";
+                    FileInfo[] files = fileList.GetFiles(); // Get all the files
+                    DirectoryInfo[] dirs = fileList.GetDirectories(); // Get all the directories
 
                     listView1.Items.Clear();
 
                     for (int i = 0; i < files.Length; i++)
                     {
-                        if (files[i].Extension.ToUpper() == ".TXT")
+                        string currentFileExtension = files[i].Extension.ToUpper(); // Get the file extension
+
+                        switch (currentFileExtension)
                         {
-                            listView1.Items.Add(files[i].Name, 8); // display txt file
+                            case ".MP3":
+                            case ".MP2":
+                                listView1.Items.Add(files[i].Name, 3); // Audio file icon
+                                break;
+                            case ".EXE":
+                            case ".COM":
+                                listView1.Items.Add(files[i].Name, 1); // Executable file icon
+                                break;
+                            case ".MP4":
+                            case ".AVI":
+                            case ".MKV":
+                                listView1.Items.Add(files[i].Name, 4); // Video file icon
+                                break;
+                            case ".PDF":
+                                listView1.Items.Add(files[i].Name, 5); // PDF file icon
+                                break;
+                            case ".DOC":
+                            case ".DOCX":
+                                listView1.Items.Add(files[i].Name, 0); // Document file icon
+                                break;
+                            case ".PNG":
+                            case ".JPG":
+                            case ".JPEG":
+                                listView1.Items.Add(files[i].Name, 6); // Image file icon
+                                break;
+                            case ".TXT":
+                                listView1.Items.Add(files[i].Name, 8); // Text file icon
+                                break;
+                            default:
+                                listView1.Items.Add(files[i].Name, 7); // Default icon
+                                break;
                         }
                     }
 
                     for (int i = 0; i < dirs.Length; i++)
                     {
-                        listView1.Items.Add(dirs[i].Name, 2); // display the directories
+                        listView1.Items.Add(dirs[i].Name, 2); // Display the directories
                     }
                 }
                 else
@@ -760,7 +791,7 @@ namespace HoneyOS
             }
             catch (Exception e)
             {
-                // Handle exceptions
+                MessageBox.Show("An error occurred while refreshing files and directories: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
