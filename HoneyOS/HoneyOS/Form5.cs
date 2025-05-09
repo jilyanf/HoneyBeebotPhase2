@@ -783,6 +783,7 @@ namespace HoneyOS
                 }
 
                 string destinationPath = Path.Combine(recycleBinPath, currentlySelectedItemName);
+                string originalName = currentlySelectedItemName;
 
                 // If destination already exists, rename to avoid collision
                 if (File.Exists(destinationPath) || Directory.Exists(destinationPath))
@@ -790,9 +791,11 @@ namespace HoneyOS
                     string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
                     string extension = Path.GetExtension(currentlySelectedItemName);
                     string nameWithoutExt = Path.GetFileNameWithoutExtension(currentlySelectedItemName);
-                    destinationPath = Path.Combine(recycleBinPath, nameWithoutExt + "_" + timestamp + extension);
+                    originalName = nameWithoutExt + "_" + timestamp + extension;
+                    destinationPath = Path.Combine(recycleBinPath, originalName);
                 }
 
+                // Move the file/directory to recycle bin
                 if (File.Exists(selectedItemPath))
                 {
                     File.Move(selectedItemPath, destinationPath);
@@ -801,6 +804,10 @@ namespace HoneyOS
                 {
                     Directory.Move(selectedItemPath, destinationPath);
                 }
+
+                // Create metadata file storing the original path
+                string metadataPath = destinationPath + ".metadata";
+                File.WriteAllText(metadataPath, selectedItemPath);
 
                 refreshFilesAndDirectories();
             }
