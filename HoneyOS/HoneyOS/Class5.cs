@@ -5,6 +5,12 @@ using System.Text;
 
 namespace HoneyOS
 {
+    public enum PageAllocationStrategy
+    {
+        FirstFit,
+        BestFit
+    }
+
     public class PagedMemoryManager
     {
         public const int PageSize = 4;
@@ -12,9 +18,11 @@ namespace HoneyOS
 
         private bool[] pageTable;
         private Dictionary<int, List<int>> processPages;
+        private PageAllocationStrategy strategy;
 
-        public PagedMemoryManager()
+        public PagedMemoryManager(PageAllocationStrategy strategy = PageAllocationStrategy.FirstFit)
         {
+            this.strategy = strategy;
             pageTable = new bool[TotalPages];
             processPages = new Dictionary<int, List<int>>();
         }
@@ -24,26 +32,17 @@ namespace HoneyOS
             allocatedPages = new List<int>();
             int pagesNeeded = (int)Math.Ceiling((double)memorySize / PageSize);
 
-            if (GetFreePageCount() < pagesNeeded) return false;
+            List<int> freeIndices = GetFreePages(strategy);
 
-            for (int i = 0; i < pageTable.Length && allocatedPages.Count < pagesNeeded; i++)
-            {
-                if (!pageTable[i])
-                {
-                    pageTable[i] = true;
-                    allocatedPages.Add(i);
-                }
-            }
+            if (freeIndices.Count < pagesNeeded)
+                return false;
 
-            if (allocatedPages.Count == pagesNeeded)
-            {
-                processPages[processId] = allocatedPages;
-                return true;
-            }
+            allocatedPages = freeIndices.Take(pagesNeeded).ToList();
+            foreach (var index in allocatedPages)
+                pageTable[index] = true;
 
-            foreach (var page in allocatedPages)
-                pageTable[page] = false;
-            return false;
+            processPages[processId] = allocatedPages;
+            return true;
         }
 
         public void DeallocateMemory(int processId)
@@ -67,6 +66,25 @@ namespace HoneyOS
                 if ((i + 1) % 4 == 0) sb.AppendLine();
             }
             return sb.ToString();
+        }
+
+        private List<int> GetFreePages(PageAllocationStrategy strategy)
+        {
+            var indices = new List<int>();
+
+            switch (strategy)
+            {
+                case PageAllocationStrategy.FirstFit:
+                    for (int i = 0; i < pageTable.Length; i++)
+                        if (!pageTable[i]) indices.Add(i);
+                    break;
+
+                case PageAllocationStrategy.BestFit:
+                    // For simple paging, BestFit is same as FirstFit (no size variance)
+                    goto case PageAllocationStrategy.FirstFit;
+            }
+
+            return indices;
         }
     }
 }

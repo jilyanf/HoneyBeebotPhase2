@@ -4,6 +4,11 @@ using System.Linq;
 
 namespace HoneyOS
 {
+    public enum taskStatus
+    {
+        PLAY, PAUSE, STOP
+    }
+
     public class TaskManager
     {
         public List<ProcessControlBlock> readyQueue;
@@ -16,6 +21,8 @@ namespace HoneyOS
         public PagedMemoryManager pagedMemoryManager;
         public MemoryMode CurrentMemoryMode { get; set; } = MemoryMode.Contiguous;
         public DefragPolicy DefragmentationPolicy { get; set; } = DefragPolicy.OnDemand;
+        public AllocationStrategy AllocationStrategy { get; set; } = AllocationStrategy.FirstFit;
+        public DefragmentationStrategy DefragStrategy { get; set; } = DefragmentationStrategy.SimpleMerge;
 
         public TaskManager()
         {
@@ -23,7 +30,7 @@ namespace HoneyOS
             jobQueue = new List<ProcessControlBlock>();
             currentTime = 0;
             taskStatus = taskStatus.PAUSE;
-            memoryManager = new MemoryManager();
+            memoryManager = new MemoryManager(AllocationStrategy, DefragStrategy);
             pagedMemoryManager = new PagedMemoryManager();
         }
 
@@ -142,10 +149,7 @@ namespace HoneyOS
                         readyQueue[index] = fifo.Run(currentProcess);
                         if (readyQueue[index].state == status.TERMINATED)
                         {
-                            if (CurrentMemoryMode == MemoryMode.Contiguous)
-                                memoryManager.DeallocateMemory(readyQueue[index].Segment);
-                            else
-                                pagedMemoryManager.DeallocateMemory(readyQueue[index].pID);
+                            memoryManager.DeallocateMemory(readyQueue[index].Segment);
                             readyQueue.RemoveAt(index);
                         }
                     }
@@ -158,10 +162,7 @@ namespace HoneyOS
                         readyQueue[index] = sjf.Run(index, ref readyQueue);
                         if (readyQueue[index].state == status.TERMINATED)
                         {
-                            if (CurrentMemoryMode == MemoryMode.Contiguous)
-                                memoryManager.DeallocateMemory(readyQueue[index].Segment);
-                            else
-                                pagedMemoryManager.DeallocateMemory(readyQueue[index].pID);
+                            memoryManager.DeallocateMemory(readyQueue[index].Segment);
                             readyQueue.RemoveAt(index);
                         }
                     }
@@ -174,10 +175,7 @@ namespace HoneyOS
                         readyQueue[index] = prio.Run(index, ref readyQueue);
                         if (readyQueue[index].state == status.TERMINATED)
                         {
-                            if (CurrentMemoryMode == MemoryMode.Contiguous)
-                                memoryManager.DeallocateMemory(readyQueue[index].Segment);
-                            else
-                                pagedMemoryManager.DeallocateMemory(readyQueue[index].pID);
+                            memoryManager.DeallocateMemory(readyQueue[index].Segment);
                             readyQueue.RemoveAt(index);
                         }
                     }
@@ -195,34 +193,14 @@ namespace HoneyOS
                             readyQueue[index].memorySize,
                             status.READY
                         );
-                        if (CurrentMemoryMode == MemoryMode.Contiguous)
-                            memoryManager.DeallocateMemory(readyQueue[index].Segment);
-                        else
-                            pagedMemoryManager.DeallocateMemory(readyQueue[index].pID);
+                        memoryManager.DeallocateMemory(readyQueue[index].Segment);
                         readyQueue.RemoveAt(index);
-                        if (CurrentMemoryMode == MemoryMode.Contiguous)
-                        {
-                            if (memoryManager.AllocateMemory(process.memorySize, out MemorySegment segment))
-                                process.Segment = segment;
-                        }
-                        else
-                        {
-                            if (pagedMemoryManager.AllocateMemory(process.pID, process.memorySize, out List<int> pages))
-                                process.PageTable = pages;
-                        }
-                        readyQueue.Add(process);
-                    }
-                    index = rr.GetEarliest(readyQueue, currentTime);
-                    if (index != -1)
-                    {
-                        ProcessControlBlock currentProcess = readyQueue[index];
-                        readyQueue[index] = rr.Run(currentProcess);
+                        if (memoryManager.AllocateMemory(process.memorySize, out MemorySegment segment))
+                            process.Segment = segment;
+                        readyQueue [index] = rr.Run(process);
                         if (readyQueue[index].state == status.TERMINATED)
                         {
-                            if (CurrentMemoryMode == MemoryMode.Contiguous)
-                                memoryManager.DeallocateMemory(readyQueue[index].Segment);
-                            else
-                                pagedMemoryManager.DeallocateMemory(readyQueue[index].pID);
+                            memoryManager.DeallocateMemory(readyQueue[index].Segment);
                             readyQueue.RemoveAt(index);
                         }
                     }
@@ -230,8 +208,4 @@ namespace HoneyOS
             }
         }
     }
-
-    public enum taskStatus { PLAY, PAUSE, STOP }
-    public enum MemoryMode { Contiguous, Paged }
-    public enum DefragPolicy { OnDemand, Periodic, Never }
 }

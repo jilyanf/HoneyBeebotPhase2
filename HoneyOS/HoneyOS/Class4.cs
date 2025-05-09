@@ -4,14 +4,45 @@ using System.Linq;
 
 namespace HoneyOS
 {
+    public enum AllocationStrategy
+    {
+        FirstFit,
+        BestFit,
+        WorstFit
+    }
+
+    public enum DefragmentationStrategy
+    {
+        SimpleMerge,
+        MoveBlocksToStart
+    }
+
+    public enum MemoryMode
+    {
+        Contiguous,
+        Paged
+    }
+
+    public enum DefragPolicy
+    {
+        OnDemand,
+        Periodic,
+        Never
+    }
+
     public class MemoryManager
     {
         protected const int TotalMemory = 32;
         protected int availableMemory;
         public List<MemorySegment> freeSegments;
+        private AllocationStrategy allocationStrategy;
+        private DefragmentationStrategy defragStrategy;
 
-        public MemoryManager()
+        public MemoryManager(AllocationStrategy strategy = AllocationStrategy.FirstFit,
+                             DefragmentationStrategy defrag = DefragmentationStrategy.SimpleMerge)
         {
+            allocationStrategy = strategy;
+            defragStrategy = defrag;
             availableMemory = TotalMemory;
             freeSegments = new List<MemorySegment> { new MemorySegment(0, TotalMemory) };
         }
@@ -19,7 +50,21 @@ namespace HoneyOS
         public bool AllocateMemory(int memorySize, out MemorySegment allocatedSegment)
         {
             allocatedSegment = null;
-            var segment = freeSegments.FirstOrDefault(s => s.Size >= memorySize);
+            MemorySegment segment = null;
+
+            switch (allocationStrategy)
+            {
+                case AllocationStrategy.FirstFit:
+                    segment = freeSegments.FirstOrDefault(s => s.Size >= memorySize);
+                    break;
+                case AllocationStrategy.BestFit:
+                    segment = freeSegments.Where(s => s.Size >= memorySize).OrderBy(s => s.Size).FirstOrDefault();
+                    break;
+                case AllocationStrategy.WorstFit:
+                    segment = freeSegments.Where(s => s.Size >= memorySize).OrderByDescending(s => s.Size).FirstOrDefault();
+                    break;
+            }
+
             if (segment != null)
             {
                 allocatedSegment = new MemorySegment(segment.Start, memorySize);
@@ -35,6 +80,7 @@ namespace HoneyOS
                 availableMemory -= memorySize;
                 return true;
             }
+
             return false;
         }
 
@@ -42,7 +88,8 @@ namespace HoneyOS
         {
             availableMemory += segment.Size;
             freeSegments.Add(segment);
-            freeSegments = MergeAdjacentSegments(freeSegments);
+            if (defragStrategy == DefragmentationStrategy.SimpleMerge)
+                freeSegments = MergeAdjacentSegments(freeSegments);
         }
 
         public int GetAvailableMemory() => availableMemory;
@@ -62,13 +109,18 @@ namespace HoneyOS
 
         public void DefragmentMemory()
         {
-            freeSegments = freeSegments.OrderBy(s => s.Start).ToList();
-            freeSegments = MergeAdjacentSegments(freeSegments);
-
-            int freeStart = freeSegments.Sum(s => s.Size);
-            freeSegments.Clear();
-            if (freeStart < TotalMemory)
-                freeSegments.Add(new MemorySegment(freeStart, TotalMemory - freeStart));
+            switch (defragStrategy)
+            {
+                case DefragmentationStrategy.SimpleMerge:
+                    freeSegments = MergeAdjacentSegments(freeSegments);
+                    break;
+                case DefragmentationStrategy.MoveBlocksToStart:
+                    freeSegments = MergeAdjacentSegments(freeSegments);
+                    int usedMemory = TotalMemory - GetAvailableMemory();
+                    freeSegments.Clear();
+                    freeSegments.Add(new MemorySegment(usedMemory, TotalMemory - usedMemory));
+                    break;
+            }
         }
 
         private List<MemorySegment> MergeAdjacentSegments(List<MemorySegment> segments)
