@@ -1139,5 +1139,71 @@ namespace HoneyOS
         {
 
         }
+
+        private void newFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sortdropdown_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sorttoolstripcontainer_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void newFolderButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Prompt the user for a folder name
+                string folderName = Interaction.InputBox("Enter the name of the new folder:", "Create New Folder", "New Folder");
+
+                // Validate the folder name
+                if (string.IsNullOrWhiteSpace(folderName))
+                {
+                    MessageBox.Show("Folder name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Check for invalid characters in the folder name
+                char[] invalidChars = Path.GetInvalidFileNameChars();
+                if (folderName.Any(c => invalidChars.Contains(c)))
+                {
+                    MessageBox.Show("Folder name contains invalid characters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Construct the full path for the new folder
+                string newFolderPath = Path.Combine(filePath, folderName);
+
+                // Check if the folder already exists
+                if (Directory.Exists(newFolderPath))
+                {
+                    MessageBox.Show("A folder with this name already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Create the new folder
+                Directory.CreateDirectory(newFolderPath);
+
+                // Refresh the file and directory list
+                refreshFilesAndDirectories();
+
+                // Notify the user
+                MessageBox.Show($"Folder '{folderName}' created successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You do not have permission to create a folder in this directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while creating the folder: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

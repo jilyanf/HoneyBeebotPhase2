@@ -295,6 +295,8 @@
     <None Include="Resources\Next.png" />
     <None Include="Resources\Drop Down.png" />
     <None Include="Resources\openRecent.png" />
+    <None Include="Resources\new folder.png" />
+    <None Include="Resources\new folder3.png" />
     <Content Include="Resources\StartButton [Default].png" />
     <None Include="Resources\Transition %288%29.png" />
     <None Include="Resources\StartButton [Hovered].png" />

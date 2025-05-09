@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\figue\\Downloads\\HoneyBeebotPhase2\\",
+  "WorkspaceRootPath": "C:\\Users\\Jilliane\\source\\repos\\HoneyBeebotPhase2\\",
   "Documents": [],
   "DocumentGroupContainers": [
     {
@@ -38,6 +38,10 @@
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             }
           ]
         }
