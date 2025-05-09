@@ -44,6 +44,9 @@ namespace HoneyOS
             // Alex added new Search File and Open Recent File Voice Commands 4/7/2025
             "search file please",               // search for a file
             "open recent file please",          // open the most recently accessed file
+
+            // Jilliane added New Folder Voice command
+            "create new folder please"
         };
 
         bool isListeningForAction;          // if true, that means "honey" is already heard and the speech engine is now listening for a command
@@ -223,8 +226,16 @@ namespace HoneyOS
                         OpenRecentFileFunction();
                         isListeningForAction = false;
                         break;
+
+                    // Jilliane added New Folder and error fallback Response
+                    case "create new folder please":
+                        MessageBox.Show("Sure, I'll create a new folder for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        newFolderButton_Click(sender, EventArgs.Empty);
+                        isListeningForAction = false;
+                        break;
                     default:
                         //indicate to UI that the command taken was not recognized
+                        MessageBox.Show("i'm sorry, I didn't understand that command.", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
                 }
         }
