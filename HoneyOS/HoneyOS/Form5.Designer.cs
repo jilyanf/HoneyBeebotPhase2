@@ -38,12 +38,8 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.iconList = new System.Windows.Forms.ImageList(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.sorttoolstripcontainer = new System.Windows.Forms.ToolStrip();
-            this.sortdropdown = new FontAwesome.Sharp.IconDropDownButton();
-            this.nameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dateModifiedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sortComboBox = new System.Windows.Forms.ComboBox();
+            this.newFolderButton = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.fileTypeLabel = new System.Windows.Forms.Label();
             this.searchButton = new System.Windows.Forms.Button();
@@ -64,10 +60,7 @@
             this.saveFileNameLabel = new System.Windows.Forms.Label();
             this.saveFileTypeLabel = new System.Windows.Forms.Label();
             this.saveFilePanel = new System.Windows.Forms.Panel();
-            this.newFolderButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            this.sorttoolstripcontainer.SuspendLayout();
             this.saveFilePanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -149,8 +142,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.sortComboBox);
             this.panel1.Controls.Add(this.newFolderButton);
-            this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.textBox2);
             this.panel1.Controls.Add(this.fileTypeLabel);
             this.panel1.Controls.Add(this.searchButton);
@@ -174,56 +167,34 @@
             this.panel1.TabIndex = 14;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
-            // panel2
+            // sortComboBox
             // 
-            this.panel2.Controls.Add(this.sorttoolstripcontainer);
-            this.panel2.Location = new System.Drawing.Point(649, 10);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(53, 24);
-            this.panel2.TabIndex = 23;
+            this.sortComboBox.FormattingEnabled = true;
+            this.sortComboBox.Items.AddRange(new object[] {
+                "Sort",
+                "Name",
+                "Size",
+                "Date Modified"
+            });
+            this.sortComboBox.Location = new System.Drawing.Point(578, 10);
+            this.sortComboBox.Name = "sortComboBox";
+            this.sortComboBox.Size = new System.Drawing.Size(121, 21);
+            this.sortComboBox.TabIndex = 22;
+            this.sortComboBox.SelectedIndex = 0;
+            this.sortComboBox.SelectedIndexChanged += new System.EventHandler(this.sortComboBox_SelectedIndexChanged);
             // 
-            // sorttoolstripcontainer
+            // newFolderButton
             // 
-            this.sorttoolstripcontainer.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sortdropdown});
-            this.sorttoolstripcontainer.Location = new System.Drawing.Point(0, 0);
-            this.sorttoolstripcontainer.Name = "sorttoolstripcontainer";
-            this.sorttoolstripcontainer.Size = new System.Drawing.Size(53, 25);
-            this.sorttoolstripcontainer.TabIndex = 0;
-            this.sorttoolstripcontainer.Text = "toolStrip2";
-            // 
-            // sortdropdown
-            // 
-            this.sortdropdown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.sortdropdown.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.nameToolStripMenuItem,
-            this.dateModifiedToolStripMenuItem,
-            this.sizeToolStripMenuItem});
-            this.sortdropdown.IconChar = FontAwesome.Sharp.IconChar.None;
-            this.sortdropdown.IconColor = System.Drawing.Color.Black;
-            this.sortdropdown.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            this.sortdropdown.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.sortdropdown.Name = "sortdropdown";
-            this.sortdropdown.Size = new System.Drawing.Size(41, 22);
-            this.sortdropdown.Text = "Sort";
-            // 
-            // nameToolStripMenuItem
-            // 
-            this.nameToolStripMenuItem.Name = "nameToolStripMenuItem";
-            this.nameToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.nameToolStripMenuItem.Text = "Name";
-            // 
-            // dateModifiedToolStripMenuItem
-            // 
-            this.dateModifiedToolStripMenuItem.Name = "dateModifiedToolStripMenuItem";
-            this.dateModifiedToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.dateModifiedToolStripMenuItem.Text = "Date Modified";
-            // 
-            // sizeToolStripMenuItem
-            // 
-            this.sizeToolStripMenuItem.Name = "sizeToolStripMenuItem";
-            this.sizeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.sizeToolStripMenuItem.Text = "Size";
+            this.newFolderButton.Image = global::HoneyOS.Properties.Resources.New_Copy;
+            this.newFolderButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.newFolderButton.Location = new System.Drawing.Point(9, 112);
+            this.newFolderButton.Name = "newFolderButton";
+            this.newFolderButton.Size = new System.Drawing.Size(101, 36);
+            this.newFolderButton.TabIndex = 24;
+            this.newFolderButton.Text = "New Folder";
+            this.newFolderButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.newFolderButton.UseVisualStyleBackColor = true;
+            this.newFolderButton.Click += new System.EventHandler(this.newFolderButton_Click);
             // 
             // textBox2
             // 
@@ -250,7 +221,7 @@
             // searchButton
             // 
             this.searchButton.Image = global::HoneyOS.Properties.Resources.SEARCH_icon;
-            this.searchButton.Location = new System.Drawing.Point(614, 6);
+            this.searchButton.Location = new System.Drawing.Point(543, 6);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(29, 31);
             this.searchButton.TabIndex = 4;
@@ -371,7 +342,7 @@
             this.openRecentFileButton.Image = global::HoneyOS.Properties.Resources.openRecent;
             this.openRecentFileButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.openRecentFileButton.Location = new System.Drawing.Point(451, 70);
-            this.openRecentFileButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.openRecentFileButton.Margin = new System.Windows.Forms.Padding(2);
             this.openRecentFileButton.Name = "openRecentFileButton";
             this.openRecentFileButton.Size = new System.Drawing.Size(113, 36);
             this.openRecentFileButton.TabIndex = 4;
@@ -385,7 +356,7 @@
             this.searchBar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.searchBar.Location = new System.Drawing.Point(61, 22);
             this.searchBar.Name = "searchBar";
-            this.searchBar.Size = new System.Drawing.Size(550, 21);
+            this.searchBar.Size = new System.Drawing.Size(479, 21);
             this.searchBar.TabIndex = 21;
             // 
             // saveFileButton
@@ -445,19 +416,6 @@
             this.saveFilePanel.Size = new System.Drawing.Size(709, 72);
             this.saveFilePanel.TabIndex = 20;
             // 
-            // newFolderButton
-            // 
-            this.newFolderButton.Image = global::HoneyOS.Properties.Resources.New_Copy;
-            this.newFolderButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.newFolderButton.Location = new System.Drawing.Point(9, 112);
-            this.newFolderButton.Name = "newFolderButton";
-            this.newFolderButton.Size = new System.Drawing.Size(101, 36);
-            this.newFolderButton.TabIndex = 24;
-            this.newFolderButton.Text = "New Folder";
-            this.newFolderButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.newFolderButton.UseVisualStyleBackColor = true;
-            this.newFolderButton.Click += new System.EventHandler(this.newFolderButton_Click);
-            // 
             // Form5
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -476,10 +434,6 @@
             this.Load += new System.EventHandler(this.Form5_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.sorttoolstripcontainer.ResumeLayout(false);
-            this.sorttoolstripcontainer.PerformLayout();
             this.saveFilePanel.ResumeLayout(false);
             this.saveFilePanel.PerformLayout();
             this.ResumeLayout(false);
@@ -519,14 +473,7 @@
         private System.Windows.Forms.Button searchButton;
         private System.Windows.Forms.Button openRecentFileButton;
         private System.Windows.Forms.TextBox textBox2;
-
-        // Jilliane added New Folder button and Sort Dropdown
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.ToolStrip sorttoolstripcontainer;
-        private FontAwesome.Sharp.IconDropDownButton sortdropdown;
-        private System.Windows.Forms.ToolStripMenuItem nameToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dateModifiedToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem sizeToolStripMenuItem;
         private System.Windows.Forms.Button newFolderButton;
+        private System.Windows.Forms.ComboBox sortComboBox;
     }
 }

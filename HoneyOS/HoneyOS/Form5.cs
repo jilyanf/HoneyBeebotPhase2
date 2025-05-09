@@ -430,7 +430,7 @@ namespace HoneyOS
             progressDialog.ShowDialog();
         }
 
-        public void loadFilesAndDirectories() //loads file and directories O - O
+        public void loadFilesAndDirectories()
         {
             DirectoryInfo fileList;
             string tempFilePath = "";
@@ -455,7 +455,7 @@ namespace HoneyOS
                         Desktop.RecentFilePath = tempFilePath;
 
                         // Open Form7 (text editor)
-                        if (textEditorForm != null) // Check if reference is valid
+                        if (textEditorForm != null)
                         {
                             textEditorForm.openFile(tempFilePath);
                             textEditorForm.currentFile = currentlySelectedItemName;
@@ -466,8 +466,6 @@ namespace HoneyOS
                         // Close Form5 (file manager)
                         this.Close();
                     }
-
-                    // Process.Start(tempFilePath); // Original code for opening files
                 }
                 else
                 {
@@ -477,54 +475,39 @@ namespace HoneyOS
                 if ((fileAttr & FileAttributes.Directory) == FileAttributes.Directory)
                 {
                     fileList = new DirectoryInfo(filePath);
-                    FileInfo[] files = fileList.GetFiles(); // get all the files
-                    DirectoryInfo[] dirs = fileList.GetDirectories(); // get all the directories
+                    FileInfo[] files = fileList.GetFiles();
+                    DirectoryInfo[] dirs = fileList.GetDirectories();
+
+                    // Sort files and directories based on the selected criteria
+                    string sortCriteria = sortComboBox.SelectedItem.ToString();
+                    if (sortCriteria == "Name")
+                    {
+                        files = files.OrderBy(f => f.Name).ToArray();
+                        dirs = dirs.OrderBy(d => d.Name).ToArray();
+                    }
+                    else if (sortCriteria == "Size") 
+                    {
+                        // Ascending Order
+                        files = files.OrderBy(f => f.Length).ToArray(); 
+                    }
+                    else if (sortCriteria == "Date Modified")
+                    {
+                        // Ascending Order
+                        files = files.OrderBy(f => f.LastWriteTime).ToArray(); 
+                        dirs = dirs.OrderBy(d => d.LastWriteTime).ToArray();
+                    }
 
                     listView1.Items.Clear();
 
-                    for (int i = 0; i < files.Length; i++)
+                    foreach (var dir in dirs)
                     {
-                        string currentFileExtension = files[i].Extension.ToUpper(); // Renamed variable to avoid conflict
-
-                        switch (currentFileExtension)
-                        {
-                            case ".MP3":
-                            case ".MP2":
-                                listView1.Items.Add(files[i].Name, 3); // Audio file icon
-                                break;
-                            case ".EXE":
-                            case ".COM":
-                                listView1.Items.Add(files[i].Name, 1); // Executable file icon
-                                break;
-                            case ".MP4":
-                            case ".AVI":
-                            case ".MKV":
-                                listView1.Items.Add(files[i].Name, 4); // Video file icon
-                                break;
-                            case ".PDF":
-                                listView1.Items.Add(files[i].Name, 5); // PDF file icon
-                                break;
-                            case ".DOC":
-                            case ".DOCX":
-                                listView1.Items.Add(files[i].Name, 0); // Document file icon
-                                break;
-                            case ".PNG":
-                            case ".JPG":
-                            case ".JPEG":
-                                listView1.Items.Add(files[i].Name, 6); // Image file icon
-                                break;
-                            case ".TXT":
-                                listView1.Items.Add(files[i].Name, 8); // Text file icon
-                                break;
-                            default:
-                                listView1.Items.Add(files[i].Name, 7); // Default icon
-                                break;
-                        }
+                        listView1.Items.Add(new ListViewItem(dir.Name, 2)); // Directory icon
                     }
 
-                    for (int i = 0; i < dirs.Length; i++)
+                    foreach (var file in files)
                     {
-                        listView1.Items.Add(dirs[i].Name, 2); //display the directories
+                        int iconIndex = GetIconIndex(file.Extension);
+                        listView1.Items.Add(new ListViewItem(file.Name, iconIndex));
                     }
                 }
                 else
@@ -537,6 +520,37 @@ namespace HoneyOS
                 MessageBox.Show("An error occurred while loading files and directories: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private int GetIconIndex(string extension)
+        {
+            switch (extension.ToUpper())
+            {
+                case ".MP3":
+                case ".MP2":
+                    return 3; // Audio file icon
+                case ".EXE":
+                case ".COM":
+                    return 1; // Executable file icon
+                case ".MP4":
+                case ".AVI":
+                case ".MKV":
+                    return 4; // Video file icon
+                case ".PDF":
+                    return 5; // PDF file icon
+                case ".DOC":
+                case ".DOCX":
+                    return 0; // Document file icon
+                case ".PNG":
+                case ".JPG":
+                case ".JPEG":
+                    return 6; // Image file icon
+                case ".TXT":
+                    return 8; // Text file icon
+                default:
+                    return 7; // Default icon
+            }
+        }
+
 
         public void loadButtonAction()
         {
@@ -1151,19 +1165,17 @@ namespace HoneyOS
 
         }
 
-        private void newFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void sortComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string selectedSortOption = sortComboBox.SelectedItem.ToString();
 
-        }
+            if (selectedSortOption == "Sort")
+            {
+                // Do nothing if "Sort" is selected
+                return;
+            }
 
-        private void sortdropdown_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void sorttoolstripcontainer_Click(object sender, EventArgs e)
-        {
-
+            loadFilesAndDirectories();
         }
 
         private void newFolderButton_Click(object sender, EventArgs e)
