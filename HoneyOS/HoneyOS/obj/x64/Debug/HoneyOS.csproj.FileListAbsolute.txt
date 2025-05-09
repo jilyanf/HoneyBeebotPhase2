@@ -1,8 +1,0 @@
-E:\Documents\BBfolder\3rdYear\CMSC 125\Github\HoneyOS\HoneyOS\HoneyOS\obj\x64\Debug\HoneyOS.csproj.AssemblyReference.cache
-E:\Documents\BBfolder\3rdYear\CMSC 125\Github\HoneyOS\HoneyOS\HoneyOS\obj\x64\Debug\HoneyOS.Form1.resources
-E:\Documents\BBfolder\3rdYear\CMSC 125\Github\HoneyOS\HoneyOS\HoneyOS\obj\x64\Debug\HoneyOS.WelcomeScreen.resources
-E:\Documents\BBfolder\3rdYear\CMSC 125\Github\HoneyOS\HoneyOS\HoneyOS\obj\x64\Debug\HoneyOS.Desktop.resources
-E:\Documents\BBfolder\3rdYear\CMSC 125\Github\HoneyOS\HoneyOS\HoneyOS\obj\x64\Debug\HoneyOS.Form4.resources
-E:\Documents\BBfolder\3rdYear\CMSC 125\Github\HoneyOS\HoneyOS\HoneyOS\obj\x64\Debug\HoneyOS.Properties.Resources.resources
-E:\Documents\BBfolder\3rdYear\CMSC 125\Github\HoneyOS\HoneyOS\HoneyOS\obj\x64\Debug\HoneyOS.csproj.GenerateResource.cache
-E:\Documents\BBfolder\3rdYear\CMSC 125\Github\HoneyOS\HoneyOS\HoneyOS\obj\x64\Debug\HoneyOS.csproj.CoreCompileInputs.cache
