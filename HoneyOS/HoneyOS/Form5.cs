@@ -804,43 +804,43 @@ namespace HoneyOS
             }
 
             string selectedItemPath = Path.Combine(filePath, currentlySelectedItemName);
+            string recycleBinPath = Path.Combine(Application.StartupPath, "RecycleBin");
 
             try
             {
+                if (!Directory.Exists(recycleBinPath))
+                {
+                    Directory.CreateDirectory(recycleBinPath);
+                }
+
+                string destinationPath = Path.Combine(recycleBinPath, currentlySelectedItemName);
+                string originalName = currentlySelectedItemName;
+
+                // If destination already exists, rename to avoid collision
+                if (File.Exists(destinationPath) || Directory.Exists(destinationPath))
+                {
+                    string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                    string extension = Path.GetExtension(currentlySelectedItemName);
+                    string nameWithoutExt = Path.GetFileNameWithoutExtension(currentlySelectedItemName);
+                    originalName = nameWithoutExt + "_" + timestamp + extension;
+                    destinationPath = Path.Combine(recycleBinPath, originalName);
+                }
+
+                // Move the file/directory to recycle bin
                 if (File.Exists(selectedItemPath))
                 {
-                    // Check if the file is in use before deleting
-                    using (FileStream fs = File.Open(selectedItemPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
-                    {
-                        // If we reach here, the file is not in use
-                    }
-
-                    // Delete the file
-                    File.Delete(selectedItemPath);
+                    File.Move(selectedItemPath, destinationPath);
                 }
                 else if (Directory.Exists(selectedItemPath))
                 {
-                    // Check if the directory is empty before deleting
-                    if (Directory.EnumerateFileSystemEntries(selectedItemPath).Any())
-                    {
-                        MessageBox.Show("Cannot delete the directory because it is not empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-
-                    // Delete the directory
-                    Directory.Delete(selectedItemPath);
+                    Directory.Move(selectedItemPath, destinationPath);
                 }
 
-                // Refresh the file list after deletion
+                // Create metadata file storing the original path
+                string metadataPath = destinationPath + ".metadata";
+                File.WriteAllText(metadataPath, selectedItemPath);
+
                 refreshFilesAndDirectories();
-            }
-            catch (UnauthorizedAccessException)
-            {
-                MessageBox.Show("Access to the item is denied. Make sure it is not in use.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (IOException)
-            {
-                MessageBox.Show("An error occurred while deleting the item. Make sure it is not in use.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {

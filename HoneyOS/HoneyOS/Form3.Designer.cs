@@ -264,7 +264,7 @@
             this.button5.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.button5.UseVisualStyleBackColor = true;
             //this.button1.Click += new System.EventHandler(this.button1_Click);
-            this.button5.Click += new System.EventHandler(this.button5_click);
+            this.button5.Click += new System.EventHandler(this.button5_Click);
 
             // 
             // pictureBox1
