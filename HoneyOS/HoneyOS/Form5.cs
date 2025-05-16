@@ -44,6 +44,9 @@ namespace HoneyOS
             // Alex added new Search File and Open Recent File Voice Commands 4/7/2025
             "search file please",               // search for a file
             "open recent file please",          // open the most recently accessed file
+
+            // Jilliane added New Folder Voice command
+            "create new folder please"
         };
 
         bool isListeningForAction;          // if true, that means "honey" is already heard and the speech engine is now listening for a command
@@ -223,8 +226,16 @@ namespace HoneyOS
                         OpenRecentFileFunction();
                         isListeningForAction = false;
                         break;
+
+                    // Jilliane added New Folder and error fallback Response
+                    case "create new folder please":
+                        MessageBox.Show("Sure, I'll create a new folder for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        newFolderButton_Click(sender, EventArgs.Empty);
+                        isListeningForAction = false;
+                        break;
                     default:
                         //indicate to UI that the command taken was not recognized
+                        MessageBox.Show("i'm sorry, I didn't understand that command.", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
                 }
         }
@@ -419,7 +430,7 @@ namespace HoneyOS
             progressDialog.ShowDialog();
         }
 
-        public void loadFilesAndDirectories() //loads file and directories O - O
+        public void loadFilesAndDirectories()
         {
             DirectoryInfo fileList;
             string tempFilePath = "";
@@ -444,7 +455,7 @@ namespace HoneyOS
                         Desktop.RecentFilePath = tempFilePath;
 
                         // Open Form7 (text editor)
-                        if (textEditorForm != null) // Check if reference is valid
+                        if (textEditorForm != null)
                         {
                             textEditorForm.openFile(tempFilePath);
                             textEditorForm.currentFile = currentlySelectedItemName;
@@ -455,8 +466,6 @@ namespace HoneyOS
                         // Close Form5 (file manager)
                         this.Close();
                     }
-
-                    // Process.Start(tempFilePath); // Original code for opening files
                 }
                 else
                 {
@@ -466,54 +475,39 @@ namespace HoneyOS
                 if ((fileAttr & FileAttributes.Directory) == FileAttributes.Directory)
                 {
                     fileList = new DirectoryInfo(filePath);
-                    FileInfo[] files = fileList.GetFiles(); // get all the files
-                    DirectoryInfo[] dirs = fileList.GetDirectories(); // get all the directories
+                    FileInfo[] files = fileList.GetFiles();
+                    DirectoryInfo[] dirs = fileList.GetDirectories();
+
+                    // Sort files and directories based on the selected criteria
+                    string sortCriteria = sortComboBox.SelectedItem.ToString();
+                    if (sortCriteria == "Name")
+                    {
+                        files = files.OrderBy(f => f.Name).ToArray();
+                        dirs = dirs.OrderBy(d => d.Name).ToArray();
+                    }
+                    else if (sortCriteria == "Size") 
+                    {
+                        // Ascending Order
+                        files = files.OrderBy(f => f.Length).ToArray(); 
+                    }
+                    else if (sortCriteria == "Date Modified")
+                    {
+                        // Ascending Order
+                        files = files.OrderBy(f => f.LastWriteTime).ToArray(); 
+                        dirs = dirs.OrderBy(d => d.LastWriteTime).ToArray();
+                    }
 
                     listView1.Items.Clear();
 
-                    for (int i = 0; i < files.Length; i++)
+                    foreach (var dir in dirs)
                     {
-                        string currentFileExtension = files[i].Extension.ToUpper(); // Renamed variable to avoid conflict
-
-                        switch (currentFileExtension)
-                        {
-                            case ".MP3":
-                            case ".MP2":
-                                listView1.Items.Add(files[i].Name, 3); // Audio file icon
-                                break;
-                            case ".EXE":
-                            case ".COM":
-                                listView1.Items.Add(files[i].Name, 1); // Executable file icon
-                                break;
-                            case ".MP4":
-                            case ".AVI":
-                            case ".MKV":
-                                listView1.Items.Add(files[i].Name, 4); // Video file icon
-                                break;
-                            case ".PDF":
-                                listView1.Items.Add(files[i].Name, 5); // PDF file icon
-                                break;
-                            case ".DOC":
-                            case ".DOCX":
-                                listView1.Items.Add(files[i].Name, 0); // Document file icon
-                                break;
-                            case ".PNG":
-                            case ".JPG":
-                            case ".JPEG":
-                                listView1.Items.Add(files[i].Name, 6); // Image file icon
-                                break;
-                            case ".TXT":
-                                listView1.Items.Add(files[i].Name, 8); // Text file icon
-                                break;
-                            default:
-                                listView1.Items.Add(files[i].Name, 7); // Default icon
-                                break;
-                        }
+                        listView1.Items.Add(new ListViewItem(dir.Name, 2)); // Directory icon
                     }
 
-                    for (int i = 0; i < dirs.Length; i++)
+                    foreach (var file in files)
                     {
-                        listView1.Items.Add(dirs[i].Name, 2); //display the directories
+                        int iconIndex = GetIconIndex(file.Extension);
+                        listView1.Items.Add(new ListViewItem(file.Name, iconIndex));
                     }
                 }
                 else
@@ -526,6 +520,37 @@ namespace HoneyOS
                 MessageBox.Show("An error occurred while loading files and directories: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private int GetIconIndex(string extension)
+        {
+            switch (extension.ToUpper())
+            {
+                case ".MP3":
+                case ".MP2":
+                    return 3; // Audio file icon
+                case ".EXE":
+                case ".COM":
+                    return 1; // Executable file icon
+                case ".MP4":
+                case ".AVI":
+                case ".MKV":
+                    return 4; // Video file icon
+                case ".PDF":
+                    return 5; // PDF file icon
+                case ".DOC":
+                case ".DOCX":
+                    return 0; // Document file icon
+                case ".PNG":
+                case ".JPG":
+                case ".JPEG":
+                    return 6; // Image file icon
+                case ".TXT":
+                    return 8; // Text file icon
+                default:
+                    return 7; // Default icon
+            }
+        }
+
 
         public void loadButtonAction()
         {
@@ -734,54 +759,23 @@ namespace HoneyOS
                 if ((fileAttr & FileAttributes.Directory) == FileAttributes.Directory)
                 {
                     fileList = new DirectoryInfo(filePath);
-                    FileInfo[] files = fileList.GetFiles(); // Get all the files
-                    DirectoryInfo[] dirs = fileList.GetDirectories(); // Get all the directories
+                    FileInfo[] files = fileList.GetFiles(); // get all the files
+                    DirectoryInfo[] dirs = fileList.GetDirectories(); // get all the directories
+                    string fileExtension = "";
 
                     listView1.Items.Clear();
 
                     for (int i = 0; i < files.Length; i++)
                     {
-                        string currentFileExtension = files[i].Extension.ToUpper(); // Get the file extension
-
-                        switch (currentFileExtension)
+                        if (files[i].Extension.ToUpper() == ".TXT")
                         {
-                            case ".MP3":
-                            case ".MP2":
-                                listView1.Items.Add(files[i].Name, 3); // Audio file icon
-                                break;
-                            case ".EXE":
-                            case ".COM":
-                                listView1.Items.Add(files[i].Name, 1); // Executable file icon
-                                break;
-                            case ".MP4":
-                            case ".AVI":
-                            case ".MKV":
-                                listView1.Items.Add(files[i].Name, 4); // Video file icon
-                                break;
-                            case ".PDF":
-                                listView1.Items.Add(files[i].Name, 5); // PDF file icon
-                                break;
-                            case ".DOC":
-                            case ".DOCX":
-                                listView1.Items.Add(files[i].Name, 0); // Document file icon
-                                break;
-                            case ".PNG":
-                            case ".JPG":
-                            case ".JPEG":
-                                listView1.Items.Add(files[i].Name, 6); // Image file icon
-                                break;
-                            case ".TXT":
-                                listView1.Items.Add(files[i].Name, 8); // Text file icon
-                                break;
-                            default:
-                                listView1.Items.Add(files[i].Name, 7); // Default icon
-                                break;
+                            listView1.Items.Add(files[i].Name, 8); // display txt file
                         }
                     }
 
                     for (int i = 0; i < dirs.Length; i++)
                     {
-                        listView1.Items.Add(dirs[i].Name, 2); // Display the directories
+                        listView1.Items.Add(dirs[i].Name, 2); // display the directories
                     }
                 }
                 else
@@ -791,7 +785,7 @@ namespace HoneyOS
             }
             catch (Exception e)
             {
-                MessageBox.Show("An error occurred while refreshing files and directories: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Handle exceptions
             }
         }
 
@@ -804,43 +798,43 @@ namespace HoneyOS
             }
 
             string selectedItemPath = Path.Combine(filePath, currentlySelectedItemName);
-            string recycleBinPath = Path.Combine(Application.StartupPath, "RecycleBin");
 
             try
             {
-                if (!Directory.Exists(recycleBinPath))
-                {
-                    Directory.CreateDirectory(recycleBinPath);
-                }
-
-                string destinationPath = Path.Combine(recycleBinPath, currentlySelectedItemName);
-                string originalName = currentlySelectedItemName;
-
-                // If destination already exists, rename to avoid collision
-                if (File.Exists(destinationPath) || Directory.Exists(destinationPath))
-                {
-                    string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-                    string extension = Path.GetExtension(currentlySelectedItemName);
-                    string nameWithoutExt = Path.GetFileNameWithoutExtension(currentlySelectedItemName);
-                    originalName = nameWithoutExt + "_" + timestamp + extension;
-                    destinationPath = Path.Combine(recycleBinPath, originalName);
-                }
-
-                // Move the file/directory to recycle bin
                 if (File.Exists(selectedItemPath))
                 {
-                    File.Move(selectedItemPath, destinationPath);
+                    // Check if the file is in use before deleting
+                    using (FileStream fs = File.Open(selectedItemPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                    {
+                        // If we reach here, the file is not in use
+                    }
+
+                    // Delete the file
+                    File.Delete(selectedItemPath);
                 }
                 else if (Directory.Exists(selectedItemPath))
                 {
-                    Directory.Move(selectedItemPath, destinationPath);
+                    // Check if the directory is empty before deleting
+                    if (Directory.EnumerateFileSystemEntries(selectedItemPath).Any())
+                    {
+                        MessageBox.Show("Cannot delete the directory because it is not empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Delete the directory
+                    Directory.Delete(selectedItemPath);
                 }
 
-                // Create metadata file storing the original path
-                string metadataPath = destinationPath + ".metadata";
-                File.WriteAllText(metadataPath, selectedItemPath);
-
+                // Refresh the file list after deletion
                 refreshFilesAndDirectories();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("Access to the item is denied. Make sure it is not in use.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("An error occurred while deleting the item. Make sure it is not in use.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
@@ -1169,6 +1163,70 @@ namespace HoneyOS
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void sortComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedSortOption = sortComboBox.SelectedItem.ToString();
+
+            if (selectedSortOption == "Sort")
+            {
+                // Do nothing if "Sort" is selected
+                return;
+            }
+
+            loadFilesAndDirectories();
+        }
+
+        private void newFolderButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Prompt the user for a folder name
+                string folderName = Interaction.InputBox("Enter the name of the new folder:", "Create New Folder", "New Folder");
+
+                // Validate the folder name
+                if (string.IsNullOrWhiteSpace(folderName))
+                {
+                    MessageBox.Show("Folder name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Check for invalid characters in the folder name
+                char[] invalidChars = Path.GetInvalidFileNameChars();
+                if (folderName.Any(c => invalidChars.Contains(c)))
+                {
+                    MessageBox.Show("Folder name contains invalid characters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Construct the full path for the new folder
+                string newFolderPath = Path.Combine(filePath, folderName);
+
+                // Check if the folder already exists
+                if (Directory.Exists(newFolderPath))
+                {
+                    MessageBox.Show("A folder with this name already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Create the new folder
+                Directory.CreateDirectory(newFolderPath);
+
+                // Refresh the file and directory list
+                refreshFilesAndDirectories();
+
+                // Notify the user
+                MessageBox.Show($"Folder '{folderName}' created successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You do not have permission to create a folder in this directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while creating the folder: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
