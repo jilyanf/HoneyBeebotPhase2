@@ -2,10 +2,11 @@
 .vs/
 *.suo
 *.user
-*.cache
 
 # Build artifacts
 bin/
 obj/
 *.exe
 *.pdb
+*.cache
+*.txt
