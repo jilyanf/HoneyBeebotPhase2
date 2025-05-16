@@ -2,18 +2,10 @@
 .vs/
 *.suo
 *.user
-*.userosscache
-*.sln.docstates
+*.cache
 
 # Build artifacts
 bin/
 obj/
 *.exe
 *.pdb
-*.cache
-*.log
-
-# Temporary files
-*.tmp
-*.bak
-*.swp

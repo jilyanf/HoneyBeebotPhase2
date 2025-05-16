@@ -258,6 +258,7 @@
     <None Include="Resources\Transition %287%29.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".gitignore" />
     <Content Include="HoneyOS.ico" />
     <Content Include="HoneyOS_Icon.ico" />
     <None Include="Resources\Stop.png" />
