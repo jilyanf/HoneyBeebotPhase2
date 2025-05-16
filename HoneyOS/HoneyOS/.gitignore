@@ -1,0 +1,19 @@
+# Ignore Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build artifacts
+bin/
+obj/
+*.exe
+*.pdb
+*.cache
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
