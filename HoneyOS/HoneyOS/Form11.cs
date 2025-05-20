@@ -7,22 +7,15 @@ namespace HoneyOS
     public partial class Form11 : Form
     {
         private algo chosenAlgo;
+        private string selectedMemoryMode;
 
-        // Public property to expose chosenAlgo
-        public algo SelectedPolicy
-        {
-            get { return chosenAlgo; }
-            set { chosenAlgo = value; }
-        }
-
-        // Parameterless constructor for designer compatibility
+        // Add parameterless constructor for designer
         public Form11()
         {
             InitializeComponent();
         }
 
-        // Constructor with algorithm parameter
-        public Form11(algo algorithm) : this() // Calls the parameterless constructor
+        public Form11(algo algorithm) : this()
         {
             this.chosenAlgo = algorithm;
             DisplaySelectedAlgorithm();
@@ -30,21 +23,32 @@ namespace HoneyOS
 
         private void DisplaySelectedAlgorithm()
         {
-            if (chosenAlgo != null) // Check if algorithm was provided
+            if (chosenAlgo != null)
             {
-                // Instead of MessageBox, update a label or other control
                 label1.Text = $"Selected Algorithm: {chosenAlgo.ToString()}";
-
-                // Optional: Change label appearance
                 label1.ForeColor = Color.Blue;
                 label1.Font = new Font(label1.Font.FontFamily, 12, FontStyle.Bold);
-                label1.AutoSize = true;
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            // Empty implementation
+            selectedMemoryMode = "Contiguous";
+            OpenForm12();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            selectedMemoryMode = "Paged";
+            OpenForm12();
+        }
+
+        private void OpenForm12()
+        {
+            MessageBox.Show($"Selected: {chosenAlgo.ToString()}, {selectedMemoryMode}", "Configuration Summary");
+            Form12 form12 = new Form12(chosenAlgo, selectedMemoryMode);
+            form12.Show();
+            this.Close();
         }
     }
 }

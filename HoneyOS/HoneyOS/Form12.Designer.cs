@@ -50,7 +50,7 @@
             this.label1.Size = new System.Drawing.Size(119, 16);
             this.label1.TabIndex = 0;
             this.label1.Text = "Allocation Strategy";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            //this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -60,7 +60,7 @@
             this.label2.Size = new System.Drawing.Size(146, 16);
             this.label2.TabIndex = 1;
             this.label2.Text = "Defragmentation Policy";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+            //this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -70,7 +70,7 @@
             this.label3.Size = new System.Drawing.Size(159, 16);
             this.label3.TabIndex = 2;
             this.label3.Text = "Defragmentation Strategy";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
+            //this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // checkBox1
             // 
