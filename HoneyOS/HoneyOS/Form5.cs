@@ -1182,8 +1182,14 @@ namespace HoneyOS
         {
             try
             {
+                // Minimize the File Manager to bring the InputBox to front
+                this.WindowState = FormWindowState.Minimized;
+
                 // Prompt the user for a folder name
                 string folderName = Interaction.InputBox("Enter the name of the new folder:", "Create New Folder", "New Folder");
+
+                // Restore the File Manager
+                this.WindowState = FormWindowState.Normal;
 
                 // Validate the folder name
                 if (string.IsNullOrWhiteSpace(folderName))
