@@ -286,9 +286,10 @@ namespace HoneyOS
         // Event handler when the Task Manager is clicked
         private void button3_Click(object sender, EventArgs e)
         {
-            Form6 form6 = new Form6(this);
-            task_manager.Add(form6);
-            form6.Show();
+            //Form6 form6 = new Form6(this);
+            //task_manager.Add(form6);
+            //form6.Show();
+            MessageBox.Show("Please configure the system settings (Scheduling and Memory Management) first.", "Configuration Required", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // Event handler when the Menu for Task Manager is clicked

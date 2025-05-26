@@ -20,8 +20,7 @@ namespace HoneyOS
     {
         private Desktop desktopInstance; // Reference to an instance of Desktop form
         private TaskManager taskManager;
-        public algo schedulingAlgo;
-
+        public algo schedulingAlgo; // Keep this if it's used elsewhere
 
         // Public properties to hold the boolean values
         public bool FIFO { get; set; }
@@ -36,23 +35,68 @@ namespace HoneyOS
         private int colorIndex = 0;
 
 
-        public algo schedulingAlgorithm { get; set; }
+        // Public properties to hold the configuration from Form12
+        public algo SelectedSchedulingAlgorithm { get; private set; }
+        public string SelectedMemoryMode { get; private set; }
+        public string SelectedAllocationStrategy { get; private set; }
+        public string SelectedDefragmentationPolicy { get; private set; }
+        public string SelectedDefragmentationStrategy { get; private set; }
 
 
-        // Constructor
-        public Form6(Desktop desktopInstance)
+        // Modified Constructor to accept the configuration details
+        public Form6(Desktop desktopInstance,
+                     algo schedulingAlgo,
+                     string memoryMode,
+                     string allocationStrategy,
+                     string defragPolicy,
+                     string defragStrategy)
         {
             // Initializes the form components
             InitializeComponent();
-            // Initializes the Task Manager components
+
+            this.desktopInstance = desktopInstance; // Assign the passed desktop instance
+
+            // Assign the passed configuration values to the public properties
+            SelectedSchedulingAlgorithm = schedulingAlgo;
+            SelectedMemoryMode = memoryMode;
+            SelectedAllocationStrategy = allocationStrategy;
+            SelectedDefragmentationPolicy = defragPolicy;
+            SelectedDefragmentationStrategy = defragStrategy;
+
+            // Initializes the Task Manager components (assuming this exists and is necessary)
             InitializeTaskManager();
-            // Initialize the list of unique colors
+            // Initialize the list of unique colors (assuming this exists and is necessary)
             InitializeUniqueColors();
+
+            // Display the configuration data in label10
+            DisplaySelectedConfiguration();
 
             Timer updateTimer = new Timer();
             updateTimer.Interval = 1000; // 1000 milliseconds = 1 second
             updateTimer.Tick += (s, ev) => Form6Update(); // Lambda expression to call the Update function
             updateTimer.Start();
+        }
+
+        private void DisplaySelectedConfiguration()
+        {
+            // Construct the text to display
+            StringBuilder configText = new StringBuilder();
+            configText.AppendLine($"Scheduling Algorithm: {SelectedSchedulingAlgorithm}");
+            configText.AppendLine($"Memory Mode: {SelectedMemoryMode}");
+            configText.AppendLine($"Allocation Strategy: {SelectedAllocationStrategy}");
+            configText.AppendLine($"Defragmentation Policy: {SelectedDefragmentationPolicy}");
+            if (SelectedDefragmentationPolicy == "Never") // Only show strategy if "Never" was selected
+            {
+                configText.AppendLine($"Defragmentation Strategy: {SelectedDefragmentationStrategy}");
+            }
+
+            // Set the text of label10
+            label10.Text = configText.ToString();
+
+            // You mentioned "keep the font small i dont care about the design just make it show the data"
+            // The designer.cs already sets it to 8F, which should be small enough.
+            // If you need it smaller, you can change it here:
+            // label10.Font = new Font("Microsoft Sans Serif", 7, FontStyle.Regular);
         }
 
         private void Form6_Load(object sender, EventArgs e)
