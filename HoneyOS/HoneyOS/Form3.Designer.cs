@@ -31,18 +31,14 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Desktop));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.notepadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.shutdownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.notepadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.BatteryTimer = new System.Windows.Forms.Timer(this.components);
             this.BatteryLife = new System.Windows.Forms.ProgressBar();
             this.bunifuElipse1 = new Bunifu.Framework.UI.BunifuElipse(this.components);
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
@@ -50,8 +46,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notepadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.shutdownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notepadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -68,60 +68,13 @@
             this.startToolStripMenuItem,
             this.notepadToolStripMenuItem,
             this.fileManagerToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 530);
-            this.menuStrip1.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.menuStrip1.Location = new System.Drawing.Point(0, 422);
+            this.menuStrip1.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1138, 46);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(854, 46);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // startToolStripMenuItem
-            // 
-            this.startToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.notepadToolStripMenuItem1,
-            this.toolStripSeparator1,
-            this.shutdownToolStripMenuItem});
-            this.startToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("startToolStripMenuItem.Image")));
-            this.startToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
-            this.startToolStripMenuItem.Size = new System.Drawing.Size(98, 42);
-            // 
-            // notepadToolStripMenuItem1
-            // 
-            this.notepadToolStripMenuItem1.Name = "notepadToolStripMenuItem1";
-            this.notepadToolStripMenuItem1.Size = new System.Drawing.Size(158, 26);
-            this.notepadToolStripMenuItem1.Text = "Notepad";
-            this.notepadToolStripMenuItem1.Click += new System.EventHandler(this.notepadToolStripMenuItem1_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(155, 6);
-            // 
-            // shutdownToolStripMenuItem
-            // 
-            this.shutdownToolStripMenuItem.Name = "shutdownToolStripMenuItem";
-            this.shutdownToolStripMenuItem.Size = new System.Drawing.Size(158, 26);
-            this.shutdownToolStripMenuItem.Text = "Shutdown";
-            this.shutdownToolStripMenuItem.Click += new System.EventHandler(this.shutdownToolStripMenuItem_Click);
-            // 
-            // notepadToolStripMenuItem
-            // 
-            this.notepadToolStripMenuItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.notepadToolStripMenuItem.Image = global::HoneyOS.Properties.Resources.Notepad_Minimize;
-            this.notepadToolStripMenuItem.Name = "notepadToolStripMenuItem";
-            this.notepadToolStripMenuItem.Padding = new System.Windows.Forms.Padding(30, 0, 4, 0);
-            this.notepadToolStripMenuItem.Size = new System.Drawing.Size(134, 42);
-            this.notepadToolStripMenuItem.Text = "  Notepad";
-            // 
-            // fileManagerToolStripMenuItem
-            // 
-            this.fileManagerToolStripMenuItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.fileManagerToolStripMenuItem.Image = global::HoneyOS.Properties.Resources.Folder__1_;
-            this.fileManagerToolStripMenuItem.Name = "fileManagerToolStripMenuItem";
-            this.fileManagerToolStripMenuItem.Size = new System.Drawing.Size(135, 42);
-            this.fileManagerToolStripMenuItem.Text = " File Manager";
             // 
             // toolStripComboBox1
             // 
@@ -134,9 +87,10 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(228)))), ((int)(((byte)(194)))));
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label1.Location = new System.Drawing.Point(1015, 524);
+            this.label1.Location = new System.Drawing.Point(761, 426);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 18);
+            this.label1.Size = new System.Drawing.Size(52, 15);
             this.label1.TabIndex = 4;
             this.label1.Text = "1:41 am";
             this.label1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
@@ -147,9 +101,10 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(228)))), ((int)(((byte)(194)))));
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label2.Location = new System.Drawing.Point(988, 544);
+            this.label2.Location = new System.Drawing.Point(741, 442);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 18);
+            this.label2.Size = new System.Drawing.Size(69, 15);
             this.label2.TabIndex = 5;
             this.label2.Text = "11/04/2024";
             this.label2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
@@ -161,10 +116,9 @@
             // BatteryLife
             // 
             this.BatteryLife.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BatteryLife.Location = new System.Drawing.Point(946, 544);
-            this.BatteryLife.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BatteryLife.Location = new System.Drawing.Point(710, 442);
             this.BatteryLife.Name = "BatteryLife";
-            this.BatteryLife.Size = new System.Drawing.Size(20, 10);
+            this.BatteryLife.Size = new System.Drawing.Size(15, 8);
             this.BatteryLife.TabIndex = 9;
             // 
             // bunifuElipse1
@@ -172,15 +126,48 @@
             this.bunifuElipse1.ElipseRadius = 1;
             this.bunifuElipse1.TargetControl = this.BatteryLife;
             // 
+            // button4
+            // 
+            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.button4.Image = global::HoneyOS.Properties.Resources.Folder;
+            this.button4.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button4.Location = new System.Drawing.Point(278, 9);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(94, 76);
+            this.button4.TabIndex = 11;
+            this.button4.Text = "Menu";
+            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.button3.Image = global::HoneyOS.Properties.Resources.Folder;
+            this.button3.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.button3.Location = new System.Drawing.Point(177, 9);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(94, 76);
+            this.button3.TabIndex = 10;
+            this.button3.Text = "Task Manager";
+            this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // pictureBox4
             // 
             this.pictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(228)))), ((int)(((byte)(194)))));
             this.pictureBox4.Image = global::HoneyOS.Properties.Resources.Wi_Fi;
-            this.pictureBox4.Location = new System.Drawing.Point(878, 539);
-            this.pictureBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox4.Location = new System.Drawing.Point(658, 438);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(20, 18);
+            this.pictureBox4.Size = new System.Drawing.Size(15, 15);
             this.pictureBox4.TabIndex = 8;
             this.pictureBox4.TabStop = false;
             // 
@@ -189,10 +176,9 @@
             this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(228)))), ((int)(((byte)(194)))));
             this.pictureBox3.Image = global::HoneyOS.Properties.Resources.Audio;
-            this.pictureBox3.Location = new System.Drawing.Point(910, 539);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox3.Location = new System.Drawing.Point(682, 438);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(20, 18);
+            this.pictureBox3.Size = new System.Drawing.Size(15, 15);
             this.pictureBox3.TabIndex = 7;
             this.pictureBox3.TabStop = false;
             // 
@@ -201,10 +187,9 @@
             this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(228)))), ((int)(((byte)(194)))));
             this.pictureBox2.Image = global::HoneyOS.Properties.Resources.Empty_Battery;
-            this.pictureBox2.Location = new System.Drawing.Point(942, 537);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox2.Location = new System.Drawing.Point(706, 436);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(27, 25);
+            this.pictureBox2.Size = new System.Drawing.Size(20, 20);
             this.pictureBox2.TabIndex = 6;
             this.pictureBox2.TabStop = false;
             // 
@@ -216,10 +201,9 @@
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.button2.Image = global::HoneyOS.Properties.Resources.Folder;
             this.button2.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button2.Location = new System.Drawing.Point(112, 12);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Location = new System.Drawing.Point(84, 10);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(116, 94);
+            this.button2.Size = new System.Drawing.Size(87, 76);
             this.button2.TabIndex = 3;
             this.button2.Text = "File Manager ";
             this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -235,10 +219,10 @@
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.button1.Image = global::HoneyOS.Properties.Resources.Note_App;
             this.button1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button1.Location = new System.Drawing.Point(20, 11);
+            this.button1.Location = new System.Drawing.Point(15, 9);
             this.button1.Margin = new System.Windows.Forms.Padding(0);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(88, 94);
+            this.button1.Size = new System.Drawing.Size(66, 76);
             this.button1.TabIndex = 0;
             this.button1.Text = "Notepad";
             this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -252,12 +236,12 @@
             this.button5.FlatAppearance.BorderSize = 0;
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.button5.Image = global::HoneyOS.Properties.Resources.Note_App;
+            this.button5.Image = global::HoneyOS.Properties.Resources.trash_bin1;
             this.button5.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button5.Location = new System.Drawing.Point(509, 12);
+            this.button5.Location = new System.Drawing.Point(382, 10);
             this.button5.Margin = new System.Windows.Forms.Padding(0);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(92, 94);
+            this.button5.Size = new System.Drawing.Size(74, 76);
             this.button5.TabIndex = 0;
             this.button5.Text = "Recycle Bin";
             this.button5.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -268,56 +252,67 @@
             // 
             this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pictureBox1.Image = global::HoneyOS.Properties.Resources.Transition__8_;
-            this.pictureBox1.Location = new System.Drawing.Point(462, 187);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox1.Location = new System.Drawing.Point(346, 152);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(211, 203);
+            this.pictureBox1.Size = new System.Drawing.Size(158, 165);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
-            // button3
+            // startToolStripMenuItem
             // 
-            this.button3.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button3.FlatAppearance.BorderSize = 0;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.button3.Image = global::HoneyOS.Properties.Resources.Folder;
-            this.button3.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button3.Location = new System.Drawing.Point(236, 11);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(126, 94);
-            this.button3.TabIndex = 10;
-            this.button3.Text = "Task Manager";
-            this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.startToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.notepadToolStripMenuItem1,
+            this.toolStripSeparator1,
+            this.shutdownToolStripMenuItem});
+            this.startToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("startToolStripMenuItem.Image")));
+            this.startToolStripMenuItem.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(96, 42);
             // 
-            // button4
+            // notepadToolStripMenuItem1
             // 
-            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button4.FlatAppearance.BorderSize = 0;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.button4.Image = global::HoneyOS.Properties.Resources.Folder;
-            this.button4.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button4.Location = new System.Drawing.Point(370, 11);
-            this.button4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(126, 94);
-            this.button4.TabIndex = 11;
-            this.button4.Text = "Menu";
-            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.notepadToolStripMenuItem1.Name = "notepadToolStripMenuItem1";
+            this.notepadToolStripMenuItem1.Size = new System.Drawing.Size(128, 22);
+            this.notepadToolStripMenuItem1.Text = "Notepad";
+            this.notepadToolStripMenuItem1.Click += new System.EventHandler(this.notepadToolStripMenuItem1_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(125, 6);
+            // 
+            // shutdownToolStripMenuItem
+            // 
+            this.shutdownToolStripMenuItem.Name = "shutdownToolStripMenuItem";
+            this.shutdownToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.shutdownToolStripMenuItem.Text = "Shutdown";
+            this.shutdownToolStripMenuItem.Click += new System.EventHandler(this.shutdownToolStripMenuItem_Click);
+            // 
+            // notepadToolStripMenuItem
+            // 
+            this.notepadToolStripMenuItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.notepadToolStripMenuItem.Image = global::HoneyOS.Properties.Resources.Notepad_Minimize;
+            this.notepadToolStripMenuItem.Name = "notepadToolStripMenuItem";
+            this.notepadToolStripMenuItem.Padding = new System.Windows.Forms.Padding(30, 0, 4, 0);
+            this.notepadToolStripMenuItem.Size = new System.Drawing.Size(122, 42);
+            this.notepadToolStripMenuItem.Text = "  Notepad";
+            // 
+            // fileManagerToolStripMenuItem
+            // 
+            this.fileManagerToolStripMenuItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.fileManagerToolStripMenuItem.Image = global::HoneyOS.Properties.Resources.Folder__1_;
+            this.fileManagerToolStripMenuItem.Name = "fileManagerToolStripMenuItem";
+            this.fileManagerToolStripMenuItem.Size = new System.Drawing.Size(119, 42);
+            this.fileManagerToolStripMenuItem.Text = " File Manager";
             // 
             // Desktop
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(1138, 576);
+            this.ClientSize = new System.Drawing.Size(854, 468);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.BatteryLife);
@@ -333,7 +328,7 @@
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Desktop";
             this.Text = "Desktop";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

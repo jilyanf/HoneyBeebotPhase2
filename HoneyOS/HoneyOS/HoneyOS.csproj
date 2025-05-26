@@ -304,6 +304,8 @@
     <Content Include=".gitignore" />
     <Content Include="HoneyOS.ico" />
     <Content Include="HoneyOS_Icon.ico" />
+    <None Include="Resources\trash can.png" />
+    <None Include="Resources\trash bin.png" />
     <None Include="Resources\Stop.png" />
     <None Include="Resources\Wi-Fi.png" />
     <None Include="Resources\Note App.png" />
