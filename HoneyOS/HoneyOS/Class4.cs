@@ -38,6 +38,12 @@ namespace HoneyOS
         private AllocationStrategy allocationStrategy;
         private DefragmentationStrategy defragStrategy;
 
+        // Monitoring statistics
+        public int AllocationCount { get; private set; } = 0;
+        public int DeallocationCount { get; private set; } = 0;
+        public int DefragmentationCount { get; private set; } = 0;
+        public int PeakMemoryUsage { get; private set; } = 0;
+
         public MemoryManager(AllocationStrategy strategy = AllocationStrategy.FirstFit,
                              DefragmentationStrategy defrag = DefragmentationStrategy.SimpleMerge)
         {
@@ -78,6 +84,11 @@ namespace HoneyOS
                     segment.Size -= memorySize;
                 }
                 availableMemory -= memorySize;
+                AllocationCount++;
+                int used = TotalMemory - availableMemory;
+                if (used > PeakMemoryUsage)
+                    PeakMemoryUsage = used;
+
                 return true;
             }
 
@@ -88,11 +99,14 @@ namespace HoneyOS
         {
             availableMemory += segment.Size;
             freeSegments.Add(segment);
+            DeallocationCount++;
             if (defragStrategy == DefragmentationStrategy.SimpleMerge)
                 freeSegments = MergeAdjacentSegments(freeSegments);
         }
 
         public int GetAvailableMemory() => availableMemory;
+
+        public int GetUsedMemory() => TotalMemory - availableMemory;
 
         public bool NeedsDefragmentation()
         {
@@ -121,6 +135,7 @@ namespace HoneyOS
                     freeSegments.Add(new MemorySegment(usedMemory, TotalMemory - usedMemory));
                     break;
             }
+            DefragmentationCount++;
         }
 
         private List<MemorySegment> MergeAdjacentSegments(List<MemorySegment> segments)
@@ -146,6 +161,21 @@ namespace HoneyOS
                 }
             }
             return merged;
+        }
+
+        // Optional: For frontend to fetch all stats at once
+        public Dictionary<string, int> GetStatistics()
+        {
+            return new Dictionary<string, int>
+            {
+                { "TotalMemory", TotalMemory },
+                { "AvailableMemory", availableMemory },
+                { "UsedMemory", GetUsedMemory() },
+                { "AllocationCount", AllocationCount },
+                { "DeallocationCount", DeallocationCount },
+                { "DefragmentationCount", DefragmentationCount },
+                { "PeakMemoryUsage", PeakMemoryUsage }
+            };
         }
     }
 
