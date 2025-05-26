@@ -29,18 +29,25 @@ namespace HoneyOS
             this.desktopInstance = desktopInstance; // Assign the reference to the instance of Desktop form
         }
         // Function that opens the Task Manager form
+        //private void OpenFileFunction()
+        //{
+        //    Form6 taskManager = new Form6(desktopInstance);
+        //    taskManager.UpdateSchedulingAlgo(chosenAlgo);
+
+        //    // Set the boolean properties
+        //    taskManager.FIFO = this.FIFO;
+        //    taskManager.SJF = this.SJF;
+        //    taskManager.PRIO = this.PRIO;
+        //    taskManager.RRR = this.RRR;
+
+        //    taskManager.Show();
+        //    this.Close();
+        //}
         private void OpenFileFunction()
         {
-            Form6 taskManager = new Form6(desktopInstance);
-            taskManager.UpdateSchedulingAlgo(chosenAlgo);
-
-            // Set the boolean properties
-            taskManager.FIFO = this.FIFO;
-            taskManager.SJF = this.SJF;
-            taskManager.PRIO = this.PRIO;
-            taskManager.RRR = this.RRR;
-            
-            taskManager.Show();
+            // Instead of opening Form6, open Form11 and pass the selected algorithm
+            Form11 form11 = new Form11(chosenAlgo);
+            form11.Show();
             this.Close();
         }
 
