@@ -495,5 +495,10 @@ namespace HoneyOS
         {
             button3.BackColor = Color.FromArgb(255, 255, 255);
         }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
