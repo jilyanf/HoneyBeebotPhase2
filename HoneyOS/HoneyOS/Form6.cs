@@ -174,8 +174,12 @@ namespace HoneyOS
                 taskManager.currentTime = 0; // reset runtime
             }
 
-            UpdateMemoryPanel(taskManager.readyQueue, taskManager.memoryManager.freeSegments); // update Memory Panel display
-            UpdateProcessList(); // update Processes Panels display
+            UpdateMemoryPanel(taskManager.readyQueue,
+                             taskManager.CurrentMemoryMode == MemoryMode.Contiguous
+                                 ? taskManager.memoryManager.freeSegments
+                                 : new List<MemorySegment>());
+            UpdateProcessList();
+            UpdateStatisticsDisplay(); // Add this line
         }
 
         // function to check if all processes within the list all have a terminated status
@@ -194,22 +198,75 @@ namespace HoneyOS
         // Initializes new task manager to be used for this instance 
         private void InitializeTaskManager()
         {
-            taskManager = new TaskManager();
+            // Convert string configurations to enum values
+            MemoryMode memoryMode = SelectedMemoryMode == "Paged" ? MemoryMode.Paged : MemoryMode.Contiguous;
 
-            // Check if a TaskManager instance is available
-            if (taskManager != null)
+            DefragPolicy defragPolicy;
+            switch (SelectedDefragmentationPolicy)
             {
-                // Update the process list based on the TaskManager instance
-                Random random = new Random();
-                // int numProcesses = random.Next(1,10);
-                taskManager.GenerateProcesses(10);
-                UpdateProcessList();
+                case "Periodic":
+                    defragPolicy = DefragPolicy.Periodic;
+                    break;
+                case "Never":
+                    defragPolicy = DefragPolicy.Never;
+                    break;
+                default:
+                    defragPolicy = DefragPolicy.OnDemand;
+                    break;
             }
-            else
+
+            AllocationStrategy allocStrategy;
+            switch (SelectedAllocationStrategy)
             {
-                // Handle the case where TaskManager is not available
-                MessageBox.Show("Task Manager instance not found!", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                case "BestFit":
+                    allocStrategy = AllocationStrategy.BestFit;
+                    break;
+                case "WorstFit":
+                    allocStrategy = AllocationStrategy.WorstFit;
+                    break;
+                default:
+                    allocStrategy = AllocationStrategy.FirstFit;
+                    break;
             }
+
+            DefragmentationStrategy defragStrategy;
+            switch (SelectedDefragmentationStrategy)
+            {
+                case "MoveBlocksToStart":
+                    defragStrategy = DefragmentationStrategy.MoveBlocksToStart;
+                    break;
+                default:
+                    defragStrategy = DefragmentationStrategy.SimpleMerge;
+                    break;
+            }
+
+            // Default to FirstFit for paging if not specified
+            PageAllocationStrategy pageAllocStrategy = PageAllocationStrategy.FirstFit;
+            PageReplacementStrategy pageReplStrategy = PageReplacementStrategy.FIFO;
+
+            taskManager = new TaskManager(
+                memoryMode,
+                defragPolicy,
+                allocStrategy,
+                defragStrategy,
+                pageAllocStrategy,
+                pageReplStrategy
+            );
+
+            // Set scheduling algorithm
+            taskManager.schedulingAlgorithm = SelectedSchedulingAlgorithm;
+
+            // Generate processes
+            Random random = new Random();
+            taskManager.GenerateProcesses(10);
+            UpdateProcessList();
+            UpdateStatisticsDisplay(); // Initialize statistics display
+
+            // Configure label10 for statistics
+            label10.AutoSize = false;
+            label10.Dock = DockStyle.Fill;
+            label10.Font = new Font("Consolas", 8);
+            label10.TextAlign = System.Drawing.ContentAlignment.TopLeft;
         }
 
         // Updates the ready and job queue based on the lists in task manager 
@@ -314,102 +371,164 @@ namespace HoneyOS
         // function to update the Memory Panel Display
         private void UpdateMemoryPanel(List<ProcessControlBlock> l, List<MemorySegment> f)
         {
-
-            // Clear existing items of the Memory Panel display
-            flowLayoutPanel1.Controls.Clear();
-
-            var loaded = l.OrderBy(pcb => pcb.Segment.Start).ToList(); // list for all used memory segments, sorted ascending
-            var free = f.OrderBy(segment => segment.Start).ToList(); // list for all free memory segments, sorted ascending
-
-            // while there are still items of both loaded and free lists, compare and get the item with the earliest Start 
-            while (loaded.Count != 0 && free.Count != 0)
+            try
             {
-                // if the loaded is the earliest, then the segment is occupied
-                if (loaded[0].Segment.Start <= free[0].Start)
+                // Clear existing items of the Memory Panel display
+                flowLayoutPanel1.Controls.Clear();
+
+                // Add null checks for input lists
+                if (l == null) l = new List<ProcessControlBlock>();
+                if (f == null) f = new List<MemorySegment>();
+
+                // Only proceed with contiguous memory visualization if in contiguous mode
+                if (taskManager.CurrentMemoryMode == MemoryMode.Contiguous)
                 {
-                    
-                    ProcessControlBlock pcb = loaded[0];
-                    MemorySegment segment = pcb.Segment;
-                    
-                    // set Memory Panel's segment details
-                    Color panelColor = Color.FromArgb(255, 255, 223, 0);
-                    int panelHeight = (int)Math.Round((double)(flowLayoutPanel1.Height / 32) * segment.Size);
-                    Panel segmentPanel = new Panel();
-                    segmentPanel.Size = new Size(194, panelHeight);
-                    segmentPanel.BackColor = panelColor;
-                    segmentPanel.Margin = new Padding(1);
-                    segmentPanel.Name = "Process " + pcb.pID.ToString();
+                    var loaded = l.Where(pcb => pcb != null && pcb.Segment != null)
+                                 .OrderBy(pcb => pcb.Segment.Start)
+                                 .ToList();
 
-                    // add panel to Memory Panel display
-                    CreateLabelInPanel(segmentPanel, segmentPanel.Name, panelHeight);
-                    flowLayoutPanel1.Controls.Add(segmentPanel);
+                    var free = f.Where(segment => segment != null)
+                               .OrderBy(segment => segment.Start)
+                               .ToList();
 
-                    // remove item from the loaded list
-                    loaded.RemoveAt(0);
+                    // while there are still items of both loaded and free lists, compare and get the item with the earliest Start 
+                    while (loaded.Count != 0 && free.Count != 0)
+                    {
+                        // if the loaded is the earliest, then the segment is occupied
+                        if (loaded[0].Segment.Start <= free[0].Start)
+                        {
+                            ProcessControlBlock pcb = loaded[0];
+                            MemorySegment segment = pcb.Segment;
+
+                            // set Memory Panel's segment details
+                            Color panelColor = Color.FromArgb(255, 255, 223, 0);
+                            int panelHeight = (int)Math.Round((double)(flowLayoutPanel1.Height / 32) * segment.Size);
+                            Panel segmentPanel = new Panel();
+                            segmentPanel.Size = new Size(194, panelHeight);
+                            segmentPanel.BackColor = panelColor;
+                            segmentPanel.Margin = new Padding(1);
+                            segmentPanel.Name = "Process " + pcb.pID.ToString();
+
+                            // add panel to Memory Panel display
+                            CreateLabelInPanel(segmentPanel, segmentPanel.Name, panelHeight);
+                            flowLayoutPanel1.Controls.Add(segmentPanel);
+
+                            // remove item from the loaded list
+                            loaded.RemoveAt(0);
+                        }
+                        // if the free is the earliest, then the segment is not occupied
+                        else
+                        {
+                            MemorySegment segment = free[0];
+
+                            // set Memory Panel's segment details
+                            int panelHeight = (int)Math.Round((double)(flowLayoutPanel1.Height / 32) * segment.Size);
+                            Panel segmentPanel = new Panel();
+                            segmentPanel.Size = new Size(194, panelHeight);
+                            segmentPanel.Margin = new Padding(1);
+                            Color panelColor = Color.FromArgb(255, 0, 0, 0);
+                            segmentPanel.BackColor = panelColor;
+
+                            // add panel to Memory Panel display
+                            flowLayoutPanel1.Controls.Add(segmentPanel);
+
+                            // remove item from the free list
+                            free.RemoveAt(0);
+                        }
+                    }
+
+                    // executes until the loaded list is empty
+                    while (loaded.Count != 0)
+                    {
+                        ProcessControlBlock pcb = loaded[0];
+                        MemorySegment segment = pcb.Segment;
+
+                        // set Memory Panel's segment details
+                        Color panelColor = Color.FromArgb(255, 255, 223, 0);
+                        int panelHeight = (int)Math.Round((double)(flowLayoutPanel1.Height / 32) * segment.Size);
+                        Panel segmentPanel = new Panel();
+                        segmentPanel.Size = new Size(194, panelHeight);
+                        segmentPanel.BackColor = panelColor;
+                        segmentPanel.Margin = new Padding(1);
+                        segmentPanel.Name = "Process " + pcb.pID.ToString();
+
+                        // add panel to Memory Panel display
+                        CreateLabelInPanel(segmentPanel, segmentPanel.Name, panelHeight);
+                        flowLayoutPanel1.Controls.Add(segmentPanel);
+
+                        // remove item from the loaded list
+                        loaded.RemoveAt(0);
+                    }
+
+                    while (free.Count != 0)
+                    {
+                        MemorySegment segment = free[0];
+
+                        // set Memory Panel's segment details
+                        int panelHeight = (int)Math.Round((double)(flowLayoutPanel1.Height / 32) * segment.Size);
+                        Panel segmentPanel = new Panel();
+                        segmentPanel.Size = new Size(194, panelHeight);
+                        segmentPanel.Margin = new Padding(1);
+                        Color panelColor = Color.FromArgb(255, 0, 0, 0);
+                        segmentPanel.BackColor = panelColor;
+
+                        // add panel to Memory Panel display
+                        flowLayoutPanel1.Controls.Add(segmentPanel);
+
+                        // remove item from the free list
+                        free.RemoveAt(0);
+                    }
                 }
-                // if the free is the earliest, then the segment is not occupied
-                else
+                else // Paged memory mode
                 {
-                    MemorySegment segment = free[0];
+                    var pagedList = l.Where(pcb => pcb != null).ToList();
 
-                    // set Memory Panel's segment details
-                    int panelHeight = (int)Math.Round((double)(flowLayoutPanel1.Height / 32) * segment.Size);
-                    Panel segmentPanel = new Panel();
-                    segmentPanel.Size = new Size(194, panelHeight);
-                    segmentPanel.Margin = new Padding(1);
-                    Color panelColor = Color.FromArgb(255, 0, 0, 0);
-                    segmentPanel.BackColor = panelColor;
+                    // Sort by process ID or another stable order
+                    var sorted = pagedList.OrderBy(pcb => pcb.pID).ToList();
 
-                    // add panel to Memory Panel display
-                    flowLayoutPanel1.Controls.Add(segmentPanel);
+                    foreach (var pcb in sorted)
+                    {
+                        int panelHeight = (int)Math.Round((double)(flowLayoutPanel1.Height / 32) * pcb.memorySize);
+                        if (panelHeight == 0) panelHeight = 1;
 
-                    // remove item from the free list
-                    free.RemoveAt(0);
+                        Panel processPanel = new Panel
+                        {
+                            Size = new Size(194, panelHeight),
+                            BackColor = Color.FromArgb(255, 200, 200, 255), // Light purple for paged
+                            Margin = new Padding(1),
+                            Name = $"Process {pcb.pID} (Paged)"
+                        };
+
+                        CreateLabelInPanel(processPanel, processPanel.Name, panelHeight);
+                        flowLayoutPanel1.Controls.Add(processPanel);
+                    }
+
+                    // Calculate and show free memory as a single contiguous block
+                    int totalUsedMemory = pagedList.Sum(pcb => pcb.memorySize);
+                    int remainingMemory = 32 - totalUsedMemory;
+
+                    if (remainingMemory > 0)
+                    {
+                        int panelHeight = (int)Math.Round((double)(flowLayoutPanel1.Height / 32) * remainingMemory);
+                        Panel freePanel = new Panel
+                        {
+                            Size = new Size(194, panelHeight),
+                            BackColor = Color.Black,
+                            Margin = new Padding(1),
+                            Name = "Free Memory"
+                        };
+
+                        flowLayoutPanel1.Controls.Add(freePanel);
+                    }
                 }
+
+                // Update the remaining memory display with null check
+                UpdateRemainingMemory(taskManager?.memoryManager?.GetAvailableMemory() ?? 0);
             }
-            // executes until the loaded list is empty
-            while(loaded.Count != 0)
+            catch (Exception ex)
             {
-                ProcessControlBlock pcb = loaded[0];
-                MemorySegment segment = pcb.Segment;
-
-                // set Memory Panel's segment details
-                Color panelColor = Color.FromArgb(255, 255, 223, 0);
-                int panelHeight = (int)Math.Round((double)(flowLayoutPanel1.Height / 32) * segment.Size);
-                Panel segmentPanel = new Panel();
-                segmentPanel.Size = new Size(194, panelHeight);
-                segmentPanel.BackColor = panelColor;
-                segmentPanel.Margin = new Padding(1);
-                segmentPanel.Name = "Process " + pcb.pID.ToString();
-
-                // add panel to Memory Panel display
-                CreateLabelInPanel(segmentPanel, segmentPanel.Name, panelHeight);
-                flowLayoutPanel1.Controls.Add(segmentPanel);
-
-                // remove item from the loaded list
-                loaded.RemoveAt(0);
+                Console.WriteLine($"Error updating memory panel: {ex.Message}");
             }
-            while(free.Count != 0)
-            {
-                MemorySegment segment = free[0];
-
-                // set Memory Panel's segment details
-                int panelHeight = (int)Math.Round((double)(flowLayoutPanel1.Height / 32) * segment.Size);
-                Panel segmentPanel = new Panel();
-                segmentPanel.Size = new Size(194, panelHeight);
-                segmentPanel.Margin = new Padding(1);
-                Color panelColor = Color.FromArgb(255, 0, 0, 0);
-                segmentPanel.BackColor = panelColor;
-
-                // add panel to Memory Panel display
-                flowLayoutPanel1.Controls.Add(segmentPanel);
-
-                // remove item from the free list
-                free.RemoveAt(0);
-            }
-
-            // Update the remaining memory display
-            UpdateRemainingMemory(taskManager.memoryManager.GetAvailableMemory());
         }
 
         // Creates a process number label on each segment in the memory
@@ -457,6 +576,47 @@ namespace HoneyOS
             {
                 memoryMax.Text = "0 MB";
             }
+        }
+
+        private void UpdateStatisticsDisplay()
+        {
+            if (taskManager == null) return;
+
+            StringBuilder stats = new StringBuilder();
+
+            // Memory Manager Statistics
+            if (taskManager.CurrentMemoryMode == MemoryMode.Contiguous)
+            {
+                var memStats = taskManager.memoryManager.GetStatistics();
+                stats.AppendLine("Contiguous Memory Statistics:");
+                stats.AppendLine($"Allocations: {memStats["AllocationCount"]}");
+                stats.AppendLine($"Deallocations: {memStats["DeallocationCount"]}");
+                stats.AppendLine($"Defragmentations: {memStats["DefragmentationCount"]}");
+                stats.AppendLine($"Peak Usage: {memStats["PeakMemoryUsage"]}MB");
+            }
+            else
+            {
+                var pageStats = taskManager.pagedMemoryManager.GetStatistics();
+                stats.AppendLine("Paged Memory Statistics:");
+                stats.AppendLine($"Allocations: {pageStats["TotalAllocations"]}");
+                stats.AppendLine($"Deallocations: {pageStats["TotalDeallocations"]}");
+                stats.AppendLine($"Page Faults: {pageStats["TotalPageFaults"]}");
+                stats.AppendLine($"Pages Replaced: {pageStats["TotalPagesReplaced"]}");
+
+                var replacedPages = pageStats["ReplacedPageIndices"] as List<int>;
+                if (replacedPages != null && replacedPages.Count > 0)
+                {
+                    stats.AppendLine($"Replaced Pages: {string.Join(",", replacedPages)}");
+                }
+            }
+
+            // Add scheduling statistics
+            stats.AppendLine("\nScheduling Statistics:");
+            stats.AppendLine($"Current Time: {taskManager.currentTime}");
+            stats.AppendLine($"Ready Processes: {taskManager.readyQueue.Count}");
+            stats.AppendLine($"Waiting Processes: {taskManager.jobQueue.Count}");
+
+            label10.Text = stats.ToString();
         }
 
         private Color GetNextUniqueColor(Random random)

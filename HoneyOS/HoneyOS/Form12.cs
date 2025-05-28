@@ -160,6 +160,8 @@ namespace HoneyOS
                 defragStrategy: defragStrategy
             );
 
+            form6.UpdateSchedulingAlgo(_schedulingAlgorithm);
+
             form6.Show();
             this.Hide(); // Hide Form12
         }
