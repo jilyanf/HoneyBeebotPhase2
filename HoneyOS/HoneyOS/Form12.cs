@@ -15,7 +15,7 @@ namespace HoneyOS
             _schedulingAlgorithm = algorithm; // Store the passed algorithm
             _memoryMode = memoryMode;         // Store the passed memory mode
 
-            DisplayConfiguration(algorithm, memoryMode);
+            //DisplayConfiguration(algorithm, memoryMode);
 
             // Adjust existing controls' positions
             MoveControlsDown(80);
@@ -36,30 +36,30 @@ namespace HoneyOS
             checkBox8.Enabled = false;
         }
 
-        private void DisplayConfiguration(algo algorithm, string memoryMode)
-        {
-            Panel summaryPanel = new Panel();
-            summaryPanel.BackColor = Color.LightBlue;
-            summaryPanel.Size = new Size(700, 60);
-            summaryPanel.Location = new Point(50, 20);
+        //private void DisplayConfiguration(algo algorithm, string memoryMode)
+        //{
+        //    Panel summaryPanel = new Panel();
+        //    summaryPanel.BackColor = Color.LightBlue;
+        //    summaryPanel.Size = new Size(700, 60);
+        //    summaryPanel.Location = new Point(50, 20);
 
-            Label algoLabel = new Label();
-            algoLabel.AutoSize = true;
-            algoLabel.Font = new Font("Microsoft Sans Serif", 10, FontStyle.Bold);
-            algoLabel.Location = new Point(10, 20);
-            algoLabel.Text = $"Scheduling Algorithm: {algorithm}";
+        //    Label algoLabel = new Label();
+        //    algoLabel.AutoSize = true;
+        //    algoLabel.Font = new Font("Microsoft Sans Serif", 10, FontStyle.Bold);
+        //    algoLabel.Location = new Point(10, 20);
+        //    algoLabel.Text = $"Scheduling Algorithm: {algorithm}";
 
-            Label memoryLabel = new Label();
-            memoryLabel.AutoSize = true;
-            memoryLabel.Font = new Font("Microsoft Sans Serif", 10, FontStyle.Bold);
-            memoryLabel.Location = new Point(300, 20);
-            memoryLabel.Text = $"Memory Mode: {memoryMode}";
+        //    Label memoryLabel = new Label();
+        //    memoryLabel.AutoSize = true;
+        //    memoryLabel.Font = new Font("Microsoft Sans Serif", 10, FontStyle.Bold);
+        //    memoryLabel.Location = new Point(300, 20);
+        //    memoryLabel.Text = $"Memory Mode: {memoryMode}";
 
-            summaryPanel.Controls.Add(algoLabel);
-            summaryPanel.Controls.Add(memoryLabel);
-            this.Controls.Add(summaryPanel);
-            summaryPanel.BringToFront();
-        }
+        //    summaryPanel.Controls.Add(algoLabel);
+        //    summaryPanel.Controls.Add(memoryLabel);
+        //    this.Controls.Add(summaryPanel);
+        //    summaryPanel.BringToFront();
+        //}
 
         private void MoveControlsDown(int pixels)
         {

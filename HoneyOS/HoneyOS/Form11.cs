@@ -23,12 +23,12 @@ namespace HoneyOS
 
         private void DisplaySelectedAlgorithm()
         {
-            if (chosenAlgo != null)
-            {
-                label1.Text = $"Selected Algorithm: {chosenAlgo.ToString()}";
-                label1.ForeColor = Color.Blue;
-                label1.Font = new Font(label1.Font.FontFamily, 12, FontStyle.Bold);
-            }
+            //if (chosenAlgo != null)
+            //{
+            //    label1.Text = $"Selected Algorithm: {chosenAlgo.ToString()}";
+            //    label1.ForeColor = Color.Blue;
+            //    label1.Font = new Font(label1.Font.FontFamily, 12, FontStyle.Bold);
+            //}
         }
 
         private void button1_Click(object sender, EventArgs e)
