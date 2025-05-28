@@ -63,14 +63,14 @@
             this.ar_Time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.memory = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.status = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.statsPanel = new System.Windows.Forms.Panel();
-            this.label15 = new System.Windows.Forms.Label();
+            //this.statsPanel = new System.Windows.Forms.Panel();
+            //this.label15 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
-            this.statsPanel.SuspendLayout();
+            //this.statsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -497,29 +497,29 @@
             this.status.Text = "Status";
             this.status.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.status.Width = 100;
-            // 
-            // statsPanel
-            // 
-            this.statsPanel.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.statsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.statsPanel.Controls.Add(this.label10);
-            this.statsPanel.Location = new System.Drawing.Point(300, 16);
-            this.statsPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.statsPanel.Name = "statsPanel";
-            this.statsPanel.Size = new System.Drawing.Size(363, 298);
-            this.statsPanel.TabIndex = 6;
-            // 
-            // label15
-            // 
-            this.label15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label15.Font = new System.Drawing.Font("Consolas", 8F);
-            this.label15.Location = new System.Drawing.Point(0, 0);
-            this.label15.Name = "label15";
-            this.label15.Padding = new System.Windows.Forms.Padding(5);
-            this.label15.Size = new System.Drawing.Size(350, 40);
-            this.label15.TabIndex = 0;
-            this.label15.Text = "Statistics will appear here";
-            this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            //// 
+            //// statsPanel
+            //// 
+            //this.statsPanel.BackColor = System.Drawing.Color.WhiteSmoke;
+            //this.statsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            //this.statsPanel.Controls.Add(this.label10);
+            //this.statsPanel.Location = new System.Drawing.Point(300, 16);
+            //this.statsPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            //this.statsPanel.Name = "statsPanel";
+            //this.statsPanel.Size = new System.Drawing.Size(363, 298);
+            //this.statsPanel.TabIndex = 6;
+            //// 
+            //// label15
+            //// 
+            //this.label15.Dock = System.Windows.Forms.DockStyle.Fill;
+            //this.label15.Font = new System.Drawing.Font("Consolas", 8F);
+            //this.label15.Location = new System.Drawing.Point(0, 0);
+            //this.label15.Name = "label15";
+            //this.label15.Padding = new System.Windows.Forms.Padding(5);
+            //this.label15.Size = new System.Drawing.Size(350, 40);
+            //this.label15.TabIndex = 0;
+            //this.label15.Text = "Statistics will appear here";
+            //this.label15.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Form6
             // 
@@ -527,7 +527,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Linen;
             this.ClientSize = new System.Drawing.Size(874, 508);
-            this.Controls.Add(this.statsPanel);
+            //this.Controls.Add(this.statsPanel);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form6";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -543,8 +543,8 @@
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
-            this.statsPanel.ResumeLayout(false);
-            this.statsPanel.PerformLayout();
+            //this.statsPanel.ResumeLayout(false);
+            //this.statsPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -586,7 +586,8 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Panel statsPanel;
+        private Form14 statsForm;
+        //private System.Windows.Forms.Label label15;
+        //private System.Windows.Forms.Panel statsPanel;
     }
 }

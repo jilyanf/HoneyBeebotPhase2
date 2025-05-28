@@ -53,7 +53,7 @@ namespace HoneyOS
         {
             // Initializes the form components
             InitializeComponent();
-
+            this.Move += Form6_Move;
             this.desktopInstance = desktopInstance; // Assign the passed desktop instance
 
             // Assign the passed configuration values to the public properties
@@ -131,6 +131,13 @@ namespace HoneyOS
                 listView1.Width = 508;
                 SJF = false;
             }
+
+            statsForm = new Form14();
+            statsForm.StartPosition = FormStartPosition.Manual;
+            statsForm.Location = new Point(this.Location.X + this.Width + 5, this.Location.Y);
+            statsForm.Show();
+
+            UpdateStatisticsDisplay();
 
         }
 
@@ -580,7 +587,7 @@ namespace HoneyOS
 
         private void UpdateStatisticsDisplay()
         {
-            if (taskManager == null) return;
+            if (taskManager == null || statsForm == null) return;
 
             StringBuilder stats = new StringBuilder();
 
@@ -624,7 +631,24 @@ namespace HoneyOS
             stats.AppendLine($"Ready Processes: {taskManager.readyQueue.Count}");
             stats.AppendLine($"Waiting Processes: {taskManager.jobQueue.Count}");
 
-            label10.Text = stats.ToString();
+            statsForm.label10.Text = stats.ToString();
+        }
+
+        private void Form6_Move(object sender, EventArgs e)
+        {
+            if (statsForm != null && statsForm.Visible)
+            {
+                statsForm.Location = new Point(this.Location.X + this.Width + 5, this.Location.Y);
+            }
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            if (statsForm != null)
+            {
+                statsForm.Close();
+            }
         }
 
         private Color GetNextUniqueColor(Random random)
