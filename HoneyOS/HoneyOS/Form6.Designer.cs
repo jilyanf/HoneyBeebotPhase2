@@ -506,7 +506,7 @@
             this.statsPanel.Location = new System.Drawing.Point(300, 16);
             this.statsPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.statsPanel.Name = "statsPanel";
-            this.statsPanel.Size = new System.Drawing.Size(263, 198);
+            this.statsPanel.Size = new System.Drawing.Size(363, 298);
             this.statsPanel.TabIndex = 6;
             // 
             // label15

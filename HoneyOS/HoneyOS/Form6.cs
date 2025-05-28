@@ -584,11 +584,19 @@ namespace HoneyOS
 
             StringBuilder stats = new StringBuilder();
 
+            var genStats = taskManager.GetStatistics();
+            stats.AppendLine("General Statistics:");
+            stats.AppendLine($"Current Time: {genStats["CurrentTime"]}");
+            stats.AppendLine($"Ready Processes: {genStats["ReadyProcesses"]}");
+            stats.AppendLine($"Waiting Processes: {genStats["WaitingProcesses"]}");
+            stats.AppendLine($"Context Switches: {genStats["TotalContextSwitches"]}");
+            stats.AppendLine($"Processes Completed: {genStats["TotalProcessesCompleted"]}");
+
             // Memory Manager Statistics
             if (taskManager.CurrentMemoryMode == MemoryMode.Contiguous)
             {
                 var memStats = taskManager.memoryManager.GetStatistics();
-                stats.AppendLine("Contiguous Memory Statistics:");
+                stats.AppendLine("\nContiguous Memory Statistics:");
                 stats.AppendLine($"Allocations: {memStats["AllocationCount"]}");
                 stats.AppendLine($"Deallocations: {memStats["DeallocationCount"]}");
                 stats.AppendLine($"Defragmentations: {memStats["DefragmentationCount"]}");
@@ -597,7 +605,7 @@ namespace HoneyOS
             else
             {
                 var pageStats = taskManager.pagedMemoryManager.GetStatistics();
-                stats.AppendLine("Paged Memory Statistics:");
+                stats.AppendLine("\nPaged Memory Statistics:");
                 stats.AppendLine($"Allocations: {pageStats["TotalAllocations"]}");
                 stats.AppendLine($"Deallocations: {pageStats["TotalDeallocations"]}");
                 stats.AppendLine($"Page Faults: {pageStats["TotalPageFaults"]}");
