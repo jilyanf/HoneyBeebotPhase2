@@ -317,30 +317,14 @@ namespace HoneyOS
             if (e.Result.Text == "hello honey")
             {
                 // Check the confidence level of the recognized speech
-                if (e.Result.Confidence < 0.8)
-                {
-                    MessageBox.Show("Who are you?", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-                }
+                // if (e.Result.Confidence < 0.8)
+                // {
+                    // MessageBox.Show("Who are you?", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // return;
+                // }
                 // If yes it will show the message box and proceeds to Desktop
                 MessageBox.Show("Oh it's you, honey! Welcome home dear!", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 OpenDesktop();
-            }
-            else
-            {
-                // Speech recognized but not in correct state
-                UpdateSpeechText("Say 'Honey' first to activate");
-                Timer resetTimer3 = new Timer();
-                resetTimer3.Interval = 2000;
-                resetTimer3.Tick += (s, ev) => {
-                    if (speechPanel.Visible)
-                    {
-                        UpdateSpeechText("Listening...");
-                    }
-                    resetTimer3.Stop();
-                    resetTimer3.Dispose();
-                };
-                resetTimer3.Start();
             }
         }
 

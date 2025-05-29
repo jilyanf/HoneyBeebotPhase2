@@ -326,14 +326,98 @@ namespace HoneyOS
             // Show what the speech engine thinks it's hearing in real-time
             if (speechPanel.Visible)
             {
-                // Lower confidence threshold and always show something
-                if (e.Result.Confidence > 0.1)
+                // Show all hypotheses, even with very low confidence
+                UpdateSpeechText($"{e.Result.Text} ({e.Result.Confidence:P0})");
+                Debug.WriteLine($"Hypothesized: {e.Result.Text} with confidence: {e.Result.Confidence:P0}");
+            }
+            if (e.Result.Confidence > 0.2 && isListeningForAction)
+            {
+                string command = e.Result.Text.ToLower();
+
+                switch (command)
                 {
-                    UpdateSpeechText($"{e.Result.Text} ({e.Result.Confidence:P0})");
-                }
-                else
-                {
-                    UpdateSpeechText("Processing speech...");
+                    case "create new file please":
+                        UpdateSpeechText("Creating new file...");
+                        MessageBox.Show("Sure, I'll create one for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        EventArgs args = new EventArgs();
+                        newFileButton_Click_1(sender, args);
+                        isListeningForAction = false;
+                        break;
+
+                    case "cut this file please":
+                        UpdateSpeechText("Cutting file...");
+                        MessageBox.Show("Sure, I'll cut this for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        EventArgs args2 = new EventArgs();
+                        cutButton_Click_1(sender, args2);
+                        isListeningForAction = false;
+                        break;
+
+                    case "copy this file please":
+                        UpdateSpeechText("Copying file...");
+                        MessageBox.Show("Sure, I'll copy this for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        EventArgs args3 = new EventArgs();
+                        copyButton_Click_1(sender, args3);
+                        isListeningForAction = false;
+                        break;
+
+                    case "paste the file please":
+                        UpdateSpeechText("Pasting file...");
+                        MessageBox.Show("Sure, I'll paste it for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        EventArgs args4 = new EventArgs();
+                        pasteButton_Click_1(sender, args4);
+                        isListeningForAction = false;
+                        break;
+
+                    case "rename this file please":
+                        UpdateSpeechText("Renaming file...");
+                        MessageBox.Show("Sure, I'll rename this for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        EventArgs args5 = new EventArgs();
+                        renameButton_Click_1(sender, args5);
+                        isListeningForAction = false;
+                        break;
+
+                    case "close this please":
+                        UpdateSpeechText("Closing File Manager...");
+                        MessageBox.Show("Sure, I'll close this for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.Close();
+                        isListeningForAction = false;
+                        break;
+
+                    case "search file please":
+                        UpdateSpeechText("Searching for file...");
+                        MessageBox.Show("Sure, I'll search for the file dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        SearchFileFunction();
+                        isListeningForAction = false;
+                        break;
+
+                    case "open recent file please":
+                        UpdateSpeechText("Opening recent file...");
+                        MessageBox.Show("Sure, I'll open the most recent file dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        OpenRecentFileFunction();
+                        isListeningForAction = false;
+                        break;
+
+                    case "create new folder please":
+                        UpdateSpeechText("Creating new folder...");
+                        MessageBox.Show("Sure, I'll create a new folder for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        newFolderButton_Click(sender, EventArgs.Empty);
+                        isListeningForAction = false;
+                        break;
+
+                    default:
+                        // Command not recognized
+                        UpdateSpeechText("Command not recognized");
+                        MessageBox.Show("I'm sorry, I didn't understand that command.", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        Timer resetTimer2 = new Timer();
+                        resetTimer2.Interval = 1500;
+                        resetTimer2.Tick += (s, ev) => {
+                            UpdateSpeechText("Awaiting command...");
+                            resetTimer2.Stop();
+                            resetTimer2.Dispose();
+                        };
+                        resetTimer2.Start();
+                        break;
                 }
             }
         }

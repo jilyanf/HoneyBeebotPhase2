@@ -17,6 +17,7 @@ namespace HoneyOS
             /* full commands */
             "open notepad please",          // create instance of notepad window
             "open file manager please",     // create instance of file manager window
+            "open recycle bin please",              // create instance of recycle bin window
             "close notepad please",         // close all existing instance of notepad window
             "close file manager please",    // close all existing instance of file manager window
             "goodbye",                // close the notepad
@@ -258,9 +259,9 @@ namespace HoneyOS
             recognizer.SpeechRecognitionRejected += new EventHandler<SpeechRecognitionRejectedEventArgs>(recognizer_SpeechRejected);
 
             // Configure recognition settings for better responsiveness
-            recognizer.InitialSilenceTimeout = TimeSpan.FromSeconds(3);
-            recognizer.BabbleTimeout = TimeSpan.FromSeconds(2);
-            recognizer.EndSilenceTimeout = TimeSpan.FromSeconds(1);
+            recognizer.InitialSilenceTimeout = TimeSpan.FromSeconds(5);
+            recognizer.BabbleTimeout = TimeSpan.FromSeconds(4);
+            recognizer.EndSilenceTimeout = TimeSpan.FromSeconds(1.5);
         }
 
         // Handle recognition completion
@@ -300,14 +301,62 @@ namespace HoneyOS
             // Show what the speech engine thinks it's hearing in real-time
             if (speechPanel.Visible)
             {
-                // Lower confidence threshold and always show something
-                if (e.Result.Confidence > 0.1)
+                // Show all hypotheses, even with very low confidence
+                UpdateSpeechText($"{e.Result.Text} ({e.Result.Confidence:P0})");
+                Debug.WriteLine($"Hypothesized: {e.Result.Text} with confidence: {e.Result.Confidence:P0}");
+            }
+            if (e.Result.Confidence > 0.2 && isListeningForAction)
+            {
+                switch (e.Result.Text.ToLower()) // for each case, create a corresponding function
                 {
-                    UpdateSpeechText($"{e.Result.Text} ({e.Result.Confidence:P0})");
-                }
-                else
-                {
-                    UpdateSpeechText("Processing speech...");
+                    case "open notepad please":
+                        UpdateSpeechText("Opening Notepad...");
+                        MessageBox.Show("Sure, i'll open it for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        OpenNotepadFunction();
+                        isListeningForAction = false;
+                        break;
+                    case "open file manager please":
+                        UpdateSpeechText("Opening File Manager...");
+                        MessageBox.Show("Sure, i'll open it for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        OpenFileManagerFunction();
+                        isListeningForAction = false;
+                        break;
+                    case "open recycle bin please":
+                        UpdateSpeechText("Opening Recycle Bin...");
+                        MessageBox.Show("Sure, i'll open it for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        OpenRecycleBinFunction();
+                        isListeningForAction = false;
+                        break;
+                    case "close notepad please":
+                        UpdateSpeechText("Closing Notepad...");
+                        MessageBox.Show("Sure, i'll close it for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        CloseNotepadFunction();
+                        isListeningForAction = false;
+                        break;
+                    case "close file manager please":
+                        UpdateSpeechText("Closing File Manager...");
+                        MessageBox.Show("Sure, i'll close it for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        CloseFileManagerFunction();
+                        isListeningForAction = false;
+                        break;
+                    case "goodbye":
+                        UpdateSpeechText("Goodbye...");
+                        MessageBox.Show("Goodbye, honey", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ShutdownFunction();
+                        isListeningForAction = false;
+                        break;
+                    default:
+                        //indicate to UI that the command taken was not recognized
+                        UpdateSpeechText("Command not recognized");
+                        Timer resetTimer2 = new Timer();
+                        resetTimer2.Interval = 1500;
+                        resetTimer2.Tick += (s, ev) => {
+                            UpdateSpeechText("Awaiting command...");
+                            resetTimer2.Stop();
+                            resetTimer2.Dispose();
+                        };
+                        resetTimer2.Start();
+                        break;
                 }
             }
         }
@@ -339,8 +388,11 @@ namespace HoneyOS
         private void recognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
             // Update visual feedback with recognized command first
-            UpdateSpeechText($"Recognized: {e.Result.Text}", true);
+            UpdateSpeechText($"Recognized: {e.Result.Text} ({e.Result.Confidence:P0})", true);
+            Debug.WriteLine($"Recognized: {e.Result.Text} with confidence: {e.Result.Confidence:P0}");
 
+            // Accept commands with very low confidence since we're using a limited grammar
+            // The grammar restriction itself helps ensure accuracy
             if (e.Result.Text.ToLower() == "honey" && !isListeningForAction)
             {
                 // indicate to UI that Beebot is listening
@@ -362,6 +414,12 @@ namespace HoneyOS
                         UpdateSpeechText("Opening File Manager...");
                         MessageBox.Show("Sure, i'll open it for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         OpenFileManagerFunction();
+                        isListeningForAction = false;
+                        break;
+                    case "open recycle bin please":
+                        UpdateSpeechText("Opening Recycle Bin...");
+                        MessageBox.Show("Sure, i'll open it for you dear", "HoneyOS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        OpenRecycleBinFunction();
                         isListeningForAction = false;
                         break;
                     case "close notepad please":
@@ -457,6 +515,16 @@ namespace HoneyOS
             Form5 form5 = new Form5(this);
             file_managers.Add(form5);
             form5.Show();
+        }
+
+        // Function that opens the Recycle Bin
+        private void OpenRecycleBinFunction()
+        {
+            // fileManagerToolStripMenuItem.Visible = true;
+            // Create an instance of Form5
+            Form4 form4 = new Form4();
+            recycle_bin.Add(form4);
+            form4.Show();
         }
 
         // Function that closes the Notepad
