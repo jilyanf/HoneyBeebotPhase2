@@ -45,7 +45,7 @@ namespace HoneyOS
 
         private void OpenForm12()
         {
-            MessageBox.Show($"Selected: {chosenAlgo.ToString()}, {selectedMemoryMode}", "Configuration Summary");
+            //MessageBox.Show($"Selected: {chosenAlgo.ToString()}, {selectedMemoryMode}", "Configuration Summary");
             Form12 form12 = new Form12(chosenAlgo, selectedMemoryMode);
             form12.Show();
             this.Close();

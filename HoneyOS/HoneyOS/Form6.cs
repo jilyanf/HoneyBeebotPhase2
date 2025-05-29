@@ -92,11 +92,6 @@ namespace HoneyOS
 
             // Set the text of label10
             label10.Text = configText.ToString();
-
-            // You mentioned "keep the font small i dont care about the design just make it show the data"
-            // The designer.cs already sets it to 8F, which should be small enough.
-            // If you need it smaller, you can change it here:
-            // label10.Font = new Font("Microsoft Sans Serif", 7, FontStyle.Regular);
         }
 
         private void Form6_Load(object sender, EventArgs e)
